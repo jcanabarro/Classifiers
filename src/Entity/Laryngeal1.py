@@ -1,7 +1,7 @@
 import csv
 
 
-class CTG:
+class Laryngeal1:
 
     def __init__(self):
         self.attribute1 = []
@@ -20,18 +20,10 @@ class CTG:
         self.attribute14 = []
         self.attribute15 = []
         self.attribute16 = []
-        self.attribute17 = []
-        self.attribute18 = []
-        self.attribute19 = []
-        self.attribute20 = []
-        self.attribute21 = []
-        self.attribute22 = []
-        self.attribute23 = []
-        self.attribute24 = []
         self.classification = []
 
     def read_csv(self):
-        with open('Bases/German.csv', newline='') as csv_file:
+        with open('Bases/Laryngeal1.csv', newline='') as csv_file:
             base = csv.reader(csv_file, delimiter=',', quotechar='|')
             for row in base:
                 get_column = list()
@@ -54,15 +46,7 @@ class CTG:
                     'a14': get_column[13],
                     'a15': get_column[14],
                     'a16': get_column[15],
-                    'a17': get_column[16],
-                    'a18': get_column[17],
-                    'a19': get_column[18],
-                    'a20': get_column[19],
-                    'a21': get_column[20],
-                    'a22': get_column[21],
-                    'a23': get_column[22],
-                    'a24': get_column[23],
-                    'c': get_column[24]
+                    'c': get_column[16]
                 }
                 self.set_val(data)
 
@@ -83,14 +67,6 @@ class CTG:
         self.attribute14.append(data['a14'])
         self.attribute15.append(data['a15'])
         self.attribute16.append(data['a16'])
-        self.attribute17.append(data['a17'])
-        self.attribute18.append(data['a18'])
-        self.attribute19.append(data['a19'])
-        self.attribute20.append(data['a20'])
-        self.attribute21.append(data['a21'])
-        self.attribute22.append(data['a22'])
-        self.attribute23.append(data['a23'])
-        self.attribute24.append(data['a24'])
         self.classification.append(data['c'])
 
     def get_values(self):

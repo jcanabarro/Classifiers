@@ -1,7 +1,7 @@
 import csv
 
 
-class Ecoil:
+class Ecoli:
 
     def __init__(self):
         self.attribute1 = []
@@ -14,7 +14,7 @@ class Ecoil:
         self.classification = []
 
     def read_csv(self):
-        with open('Bases/Ecoil.csv', newline='') as csv_file:
+        with open('Bases/Ecoli.csv', newline='') as csv_file:
             base = csv.reader(csv_file, delimiter=',', quotechar='|')
             for row in base:
                 get_column = list()
