@@ -1,7 +1,7 @@
 import csv
 
 
-class German:
+class Liver:
 
     def __init__(self):
         self.attribute1 = []

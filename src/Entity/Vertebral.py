@@ -1,7 +1,7 @@
 import csv
 
 
-class Vehicle:
+class Vertebral:
 
     def __init__(self):
         self.attribute1 = []

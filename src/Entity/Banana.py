@@ -1,14 +1,11 @@
-import pandas as pd
+from src.Entity.Entity import Entity
 
 
-class Banana:
+class Banana(Entity):
 
     def __init__(self):
-        self.df = []
-
-    def read_csv(self):
-        self.df = pd.read_csv('../Bases/Banana.csv')
+        self.path = '../Bases/Banana.csv'
+        super(Banana, self).__init__(self.path)
 
     def get_values(self, attr):
-        print(self.df[attr])
-0
+        return super(Banana, self).get_value(attr)
