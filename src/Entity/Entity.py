@@ -25,6 +25,7 @@ class Entity:
 
     def get_svm(self):
         self.classifier = svm.SVC()
+        # In this case we need to do a ravel because fit don't expect a 1d matrix
         self.classifier.fit(self.train_attributes, np.ravel(self.train_class))
         return self.classifier.predict(self.test_attributes), self.test_class
 

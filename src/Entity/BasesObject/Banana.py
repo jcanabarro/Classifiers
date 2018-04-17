@@ -9,12 +9,3 @@ class Banana(Entity):
 
     def get_value(self, attr):
         return super(Banana, self).get_value(attr)
-
-    def get_train_set(self):
-        return super(Banana, self).get_train_set()
-
-    def get_test_set(self):
-        return super(Banana, self).get_test_set()
-
-    def get_validation_set(self):
-        return super(Banana, self).get_validation_set()

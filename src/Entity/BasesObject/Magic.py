@@ -9,12 +9,3 @@ class Magic(Entity):
 
     def get_value(self, attr):
         return super(Magic, self).get_value(attr)
-
-    def get_train_set(self):
-        return super(Magic, self).get_train_set()
-
-    def get_test_set(self):
-        return super(Magic, self).get_test_set()
-
-    def get_validation_set(self):
-        return super(Magic, self).get_validation_set()
