@@ -63,7 +63,7 @@ wine = Wine()
 
 # Get method return a tuple where the first element are the predict and the second the test class
 svm = banana.get_svm()
-knn, test_class = banana.get_knn()
-nb = banana.get_naive_bayes()
-td = banana.get_tree_decision()
-mlp = banana.get_mlp()
+# knn, test_class = banana.get_knn()
+# nb = banana.get_naive_bayes()
+# td = banana.get_tree_decision()
+# mlp = banana.get_mlp()
