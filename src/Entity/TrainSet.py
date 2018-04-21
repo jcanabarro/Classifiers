@@ -1,10 +1,10 @@
 import numpy as np
 
 # Classifier imports
-from sklearn import svm
+from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 
 
@@ -23,7 +23,7 @@ class TrainSet:
         return classifier.predict(self.test_attributes), self.test_class
 
     def get_trained_svm(self):
-        self.classifier = svm.SVC()
+        self.classifier = SVC()
         return self.generic_train(self.classifier)
 
     def get_trained_knn(self, neighbors):
@@ -35,7 +35,7 @@ class TrainSet:
         return self.generic_train(self.classifier)
 
     def get_trained_tree_decision(self):
-        self.classifier = tree.DecisionTreeClassifier()
+        self.classifier = DecisionTreeClassifier()
         return self.generic_train(self.classifier)
 
     def get_trained_mlp(self):

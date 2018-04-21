@@ -1,10 +1,10 @@
 import numpy as np
 from sklearn.model_selection import GridSearchCV
 
-from sklearn import svm
+from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
-from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 
 
@@ -23,14 +23,14 @@ class BestParameters:
         tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-1, 1e-2, 1e-3, 1e-4],
                              'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]},
                             {'kernel': ['linear'], 'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}]
-        self.classifier = GridSearchCV(svm.SVC(), tuned_parameters)
+        self.classifier = GridSearchCV(SVC(), tuned_parameters)
         return self.get_best_params(self.classifier)
 
     def get_knn_best_param(self):
         tuned_parameters = [{'algorithm': ['auto'], 'n_neighbors': [5, 10, 15, 20, 25]},
                             {'algorithm': ['ball_tree'], 'n_neighbors': [5, 10, 15, 20, 25]},
                             {'algorithm': ['kd_tree'], 'n_neighbors': [5, 10, 15, 20, 25]},
-                            {'algorithm': ['brute'], 'n_neighbors': [5, 10, 15, 20, 25]},]
+                            {'algorithm': ['brute'], 'n_neighbors': [5, 10, 15, 20, 25]}, ]
         self.classifier = GridSearchCV(KNeighborsClassifier(), tuned_parameters)
         return self.get_best_params(self.classifier)
 
@@ -49,7 +49,22 @@ class BestParameters:
         return self.get_best_params(self.classifier)
 
     def get_tree_decision_best_params(self):
-        pass
+        tuned_parameters = {
+            "criterion": ["gini", "entropy"],
+            "min_samples_split": [2, 10, 20],
+            "max_depth": [None, 2, 5, 10],
+            "min_samples_leaf": [1, 5, 10],
+            "max_leaf_nodes": [None, 5, 10, 20],
+        }
+        self.classifier = GridSearchCV(DecisionTreeClassifier(), tuned_parameters)
+        return self.get_best_params(self.classifier)
 
     def get_mlp_best_params(self):
-        pass
+        tuned_parameters = {
+            'learning_rate': ["constant", "invscaling", "adaptive"],
+            'hidden_layer_sizes': [(100, 1), (100, 2), (100, 3)],
+            'alpha': [10.0 ** -np.arange(1, 7)],
+            'activation': ["logistic", "relu", "Tanh"]
+        }
+        self.classifier = GridSearchCV(estimator=MLPClassifier, param_grid=tuned_parameters, n_jobs=-1, verbose=2, cv=10)
+        return self.get_best_params(self.classifier)
