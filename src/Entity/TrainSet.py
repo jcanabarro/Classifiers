@@ -19,8 +19,7 @@ class TrainSet:
 
     def generic_train(self, classifier):
         # In this case we need to do a ravel because fit don't expect a 1d matrix
-        classifier.fit(self.train_attributes, np.ravel(self.train_class))
-        return classifier.predict(self.test_attributes), self.test_class
+        return classifier.fit(self.train_attributes, np.ravel(self.train_class))
 
     def get_trained_svm(self):
         self.classifier = SVC()

@@ -24,7 +24,7 @@ class Entity:
             test_size=0.5,
             train_size=0.5)
         self.train_set = TrainSet(self.train_attributes, self.train_class, self.test_attributes, self.test_class)
-        self.best_param = BestParameters(self.train_attributes, self.train_class)
+        self.best_param = BestParameters(self.validate_attributes, self.validate_class, self.test_attributes)
 
     def get_value(self, attr):
         return self.data_frame[attr]
@@ -46,8 +46,17 @@ class Entity:
         return self.train_set.get_trained_mlp()
 
     # Functions to get all the better parameters
-    def get_svm_best_param(self):
-        return self.best_param.get_svm_best_param()
+    def get_svm_best_param(self, classifier):
+        return self.best_param.get_svm_best_param(classifier)
 
-    def get_knn_best_param(self):
-        return self.best_param.get_knn_best_param()
+    def get_knn_best_param(self, classifier):
+        return self.best_param.get_knn_best_param(classifier)
+
+    def get_naive_bayes_best_param(self, classifier):
+        return self.best_param.get_naive_bayes_best_param(classifier)
+
+    def get_tree_decision_best_params(self, classifier):
+        return self.best_param.get_tree_decision_best_param(classifier)
+
+    def get_mlp_best_param(self, classifier):
+        return self.best_param.get_mlp_best_param(classifier)
