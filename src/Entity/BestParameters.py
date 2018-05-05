@@ -12,7 +12,7 @@ class BestParameters:
 
     def get_best_params(self, classifier):
         classifier.fit(self.validate_attributes, np.ravel(self.validate_class))
-        return classifier.best_params_, classifier.predict(self.test_attributes)
+        return classifier.best_params_, classifier.predict(self.test_attributes), classifier.predict_proba(self.test_attributes)
 
     def get_svm_best_param(self, classifier):
         tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-1, 1e-2, 1e-3, 1e-4],
@@ -61,5 +61,5 @@ class BestParameters:
             'alpha': [10.0 ** -np.arange(1, 7)],
             'activation': ["logistic", "relu", "Tanh"]
         }
-        classifier = GridSearchCV(estimator=classifier, param_grid=tuned_parameters, n_jobs=-1, verbose=2, cv=10)
+        classifier = GridSearchCV(estimator=classifier, param_grid=tuned_parameters, n_jobs=-1, verbose=2)
         return self.get_best_params(classifier)
