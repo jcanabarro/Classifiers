@@ -12,7 +12,7 @@ class BestParameters:
 
     def get_best_params(self, classifier):
         classifier.fit(self.validate_attributes, np.ravel(self.validate_class))
-        return classifier.best_params_, classifier.predict(self.test_attributes), classifier.predict_proba(self.test_attributes)
+        return classifier.best_params_
 
     def get_svm_best_param(self, classifier):
         tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-1, 1e-2, 1e-3, 1e-4],
