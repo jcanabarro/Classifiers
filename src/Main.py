@@ -61,10 +61,8 @@ banana = Banana()
 # weaning = Weaning()
 # wine = Wine()
 
-# Get method return a tuple where the first element are the predict and the second the test class
-svm = banana.get_svm()
-result, classifier = banana.get_svm_best_param(svm)
-# knn, test_class = banana.get_knn()
-# nb = banana.get_naive_bayes()
-# td = banana.get_tree_decision()
-# mlp = banana.get_mlp()
+knn = banana.get_knn(3)
+best_param, knn = banana.get_knn_best_param(knn)
+classifier_result, classifier_proba = banana.get_tested_classifier(knn, 'knn')
+print("Best Param:", best_param)
+
