@@ -22,10 +22,10 @@ class BestParameters:
         return self.get_best_params(classifier)
 
     def get_knn_best_param(self, classifier):
-        tuned_parameters = [{'algorithm': ['auto'], 'n_neighbors': [5, 10, 15, 20, 25]},
-                            {'algorithm': ['ball_tree'], 'n_neighbors': [5, 10, 15, 20, 25]},
-                            {'algorithm': ['kd_tree'], 'n_neighbors': [5, 10, 15, 20, 25]},
-                            {'algorithm': ['brute'], 'n_neighbors': [5, 10, 15, 20, 25]}, ]
+        tuned_parameters = [{'algorithm': ['auto'], 'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]},
+                            {'algorithm': ['ball_tree'], 'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]},
+                            {'algorithm': ['kd_tree'], 'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]},
+                            {'algorithm': ['brute'], 'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]}]
         classifier = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(classifier)
 
@@ -47,9 +47,9 @@ class BestParameters:
         tuned_parameters = {
             "criterion": ["gini", "entropy"],
             "min_samples_split": [2, 10, 20],
-            "max_depth": [None, 2, 5, 10],
+            "max_depth": [None, 2, 5, 10],  # pruned
             "min_samples_leaf": [1, 5, 10],
-            "max_leaf_nodes": [None, 5, 10, 20],
+            "max_leaf_nodes": [None, 5, 10, 20],  # pruned
         }
         classifier = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(classifier)
@@ -57,9 +57,11 @@ class BestParameters:
     def get_mlp_best_param(self, classifier):
         tuned_parameters = {
             'learning_rate': ["constant", "invscaling", "adaptive"],
-            'hidden_layer_sizes': [(100, 1), (100, 2), (100, 3)],
+            'hidden_layer_sizes': [(10, 2), (20, 2), (30, 2),  (40, 2), (50, 2),
+                                   (60, 2), (70, 2), (80, 2),  (90, 2), (100, 2),],
             'alpha': [10.0 ** -np.arange(1, 7)],
-            'activation': ["logistic", "relu", "Tanh"]
+            'activation': ["logistic", "relu", "Tanh"],
+            'max_iter': [100, 200, 300, 400, 500]
         }
         classifier = GridSearchCV(estimator=classifier, param_grid=tuned_parameters, n_jobs=-1, verbose=2)
         return self.get_best_params(classifier)
