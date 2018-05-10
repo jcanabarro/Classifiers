@@ -63,6 +63,7 @@ banana = Banana()
 
 knn = banana.get_knn(3)
 best_param, knn = banana.get_knn_best_param(knn)
+banana.get_tested_classifier(knn, "knn")
 # classifier_result, classifier_proba = banana.get_tested_classifier(knn, 'knn')
 # print("Best Param:", best_param)
 

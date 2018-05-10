@@ -74,5 +74,5 @@ class Entity:
             classifier_test_result.append(self.test_set.get_tested_classifier(classifier))
             classifier_proba_test_result.append(self.test_set.get_proba_tested_classifier(classifier))
         # Path in this case already have the folder inside de function, and also have the csv extension
-        ToCsv().save_on_csv(name + 'Result' + self.path, classifier_test_result)
+        ToCsv().save_on_csv(name + 'Result' + self.path, pd.DataFrame(classifier_test_result).T)
         return classifier_test_result, classifier_proba_test_result
