@@ -16,8 +16,8 @@ class BestParameters:
 
     def get_svm_best_param(self, classifier):
         tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-1, 1e-2, 1e-3, 1e-4],
-                             'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]},
-                            {'kernel': ['linear'], 'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}]
+                             'C': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]},
+                            {'kernel': ['linear'], 'C': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]}]
         classifier = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(classifier)
 
