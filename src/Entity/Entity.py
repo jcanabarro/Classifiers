@@ -73,6 +73,12 @@ class Entity:
         for i in range(20):
             classifier_test_result.append(self.test_set.get_tested_classifier(classifier))
             classifier_proba_test_result.append(self.test_set.get_proba_tested_classifier(classifier))
+
+        data_frame_result = pd.DataFrame(classifier_test_result).T
+        data_frame_proba = pd.DataFrame.from_records(classifier_proba_test_result).T
+        all_data_frames = [data_frame_result, data_frame_proba]
+        for df in all_data_frames:
+            df.columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         # Path in this case already have the folder inside de function, and also have the csv extension
-        ToCsv().save_on_csv(name + 'Result' + self.path, pd.DataFrame(classifier_test_result).T)
-        return classifier_test_result, classifier_proba_test_result
+
+        ToCsv().save_on_csv(name + 'Result' + self.path, pd.concat(all_data_frames, axis=1).reset_index(drop=True))
