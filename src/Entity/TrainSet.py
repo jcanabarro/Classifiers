@@ -22,7 +22,7 @@ class TrainSet:
         return classifier.fit(self.train_attributes, np.ravel(self.train_class))
 
     def get_trained_svm(self):
-        self.classifier = SVC()
+        self.classifier = SVC(probability=True)
         return self.generic_train(self.classifier)
 
     def get_trained_knn(self, neighbors):

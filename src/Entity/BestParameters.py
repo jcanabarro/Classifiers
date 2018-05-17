@@ -11,9 +11,7 @@ class BestParameters:
         self.classifier = None
 
     def get_best_params(self, classifier):
-        print('oi')
         classifier.fit(self.validate_attributes, np.ravel(self.validate_class))
-        print('oi')
         return classifier.best_params_, classifier
 
     def get_svm_best_param(self, classifier):
@@ -34,7 +32,6 @@ class BestParameters:
     def get_naive_bayes_best_param(self, classifier):
         tuned_parameters = {}
         classifier = GridSearchCV(classifier, tuned_parameters)
-        print(classifier.get_params().keys())
         return self.get_best_params(classifier)
 
     def get_tree_decision_best_param(self, classifier):
