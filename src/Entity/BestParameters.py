@@ -38,7 +38,8 @@ class BestParameters:
         tuned_parameters = {
             "criterion": ["gini", "entropy"],
             "min_samples_split": [2, 10, 20],
-            "max_depth": [None, 2, 5, 10],  # pruned
+            "splitter": ["best", "random"],
+            "max_depth": [None, 5, 10, 20],  # pruned
             "min_samples_leaf": [1, 5, 10],
             "max_leaf_nodes": [None, 5, 10, 20],  # pruned
         }
@@ -48,7 +49,8 @@ class BestParameters:
     def get_mlp_best_param(self, classifier):
         tuned_parameters = {
             'learning_rate': ["constant", "invscaling", "adaptive"],
-            # 'hidden_layer_sizes': [(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)],
+            'hidden_layer_sizes': [(10,), (20,), (30,), (40,), (50,),
+                                   (60,), (70,), (80,), (90,), (100,)],
             'alpha': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
             'activation': ["logistic", "relu"],
             'max_iter': [100, 200, 300, 400, 500]
