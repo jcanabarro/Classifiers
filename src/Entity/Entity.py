@@ -51,20 +51,20 @@ class Entity:
         return self.best_param.get_mlp_best_param(classifier)
 
     # Functions to train all the classifiers
-    def get_svm(self):
-        return self.train_set.get_trained_svm()
+    def get_svm(self, samples):
+        return self.train_set.get_trained_svm(samples)
 
-    def get_knn(self, neighbors):
-        return self.train_set.get_trained_knn(neighbors)
+    def get_knn(self, neighbors, samples):
+        return self.train_set.get_trained_knn(neighbors, samples)
 
-    def get_naive_bayes(self):
-        return self.train_set.get_trained_naive_bayes()
+    def get_naive_bayes(self, samples):
+        return self.train_set.get_trained_naive_bayes(samples)
 
-    def get_tree_decision(self):
-        return self.train_set.get_trained_tree_decision()
+    def get_tree_decision(self, samples):
+        return self.train_set.get_trained_tree_decision(samples)
 
-    def get_mlp(self):
-        return self.train_set.get_trained_mlp()
+    def get_mlp(self, samples):
+        return self.train_set.get_trained_mlp(samples)
 
     # Function to test all the classifiers
     def get_tested_classifier(self, classifier, name):
@@ -78,6 +78,7 @@ class Entity:
         data_frame_proba = pd.DataFrame.from_records(classifier_proba_test_result).T
         all_data_frames = [data_frame_result, data_frame_proba]
         for df in all_data_frames:
-            df.columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+            df.columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                          11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
         # Path in this case already have the folder inside de function, and also have the csv extension
         ToCsv().save_on_csv(name + 'Result' + self.path, pd.concat(all_data_frames, axis=1).reset_index(drop=True))
