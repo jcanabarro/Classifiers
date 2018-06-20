@@ -17,6 +17,7 @@ class Entity:
         self.data_frame = pd.read_csv(path)
         self.path = os.path.split(path)[1]
         self.classifier = np.split(self.data_frame, [len(self.data_frame.columns) - 1], axis=1)
+        self.samples = 0.5
         self.train_attributes, self.test_attributes, self.train_class, self.test_class = train_test_split(
             self.classifier[0],
             self.classifier[1],
@@ -27,7 +28,8 @@ class Entity:
             self.test_class,
             test_size=0.5,
             train_size=0.5)
-        self.train_set = TrainSet(self.train_attributes, self.train_class, self.test_attributes, self.test_class)
+        self.train_set = TrainSet(self.train_attributes, self.train_class, self.test_attributes, self.test_class,
+                                  self.samples)
         self.best_param = BestParameters(self.validate_attributes, self.validate_class, self.test_attributes)
         self.test_set = TestSet(self.test_attributes, self.test_class)
 
@@ -50,21 +52,9 @@ class Entity:
     def get_mlp_best_param(self, classifier):
         return self.best_param.get_mlp_best_param(classifier)
 
-    # Functions to train all the classifiers
-    def get_svm(self, samples):
-        return self.train_set.get_trained_svm(samples)
-
-    def get_knn(self, neighbors, samples):
-        return self.train_set.get_trained_knn(neighbors, samples)
-
-    def get_naive_bayes(self, samples):
-        return self.train_set.get_trained_naive_bayes(samples)
-
-    def get_tree_decision(self, samples):
-        return self.train_set.get_trained_tree_decision(samples)
-
-    def get_mlp(self, samples):
-        return self.train_set.get_trained_mlp(samples)
+    # Function to train all the classifiers
+    def get_trained_classifiers(self, neighbors):
+        return self.train_set.get_trained_classifiers(neighbors)
 
     # Function to test all the classifiers
     def get_tested_classifier(self, classifier, name):
