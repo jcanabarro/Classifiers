@@ -25,7 +25,7 @@ class TrainSet:
         return bagging.fit(self.train_attributes, np.ravel(self.train_class))
 
     def get_trained_svm(self, samples):
-        self.classifier = SVC(probability=False)
+        self.classifier = SVC(kernel='linear', probability=False, class_weight='balanced')
         return self.generic_train(self.classifier, samples)
 
     def get_trained_knn(self, neighbors, samples):
