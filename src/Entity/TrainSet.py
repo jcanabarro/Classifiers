@@ -42,8 +42,8 @@ class TrainSet:
 
     def generic_train(self, classifiers):
         for base_estimator in classifiers:
-            self.bagging.append(BaggingClassifier(base_estimator=base_estimator, max_samples=self.samples).\
-                fit(self.train_attributes, np.ravel(self.train_class)))
+            self.bagging.append(BaggingClassifier(base_estimator=base_estimator, max_samples=self.samples). \
+                                fit(self.train_attributes, np.ravel(self.train_class)))
         # In this case we need to do a ravel because fit don't expect a 1d matrix
         return self.bagging
 

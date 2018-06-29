@@ -19,15 +19,9 @@ class Entity:
         self.classifier = np.split(self.data_frame, [len(self.data_frame.columns) - 1], axis=1)
         self.samples = 0.5
         self.train_attributes, self.test_attributes, self.train_class, self.test_class = train_test_split(
-            self.classifier[0],
-            self.classifier[1],
-            test_size=0.5,
-            train_size=0.5)
+            self.classifier[0], self.classifier[1], test_size=0.5, train_size=0.5)
         self.test_attributes, self.validate_attributes, self.test_class, self.validate_class = train_test_split(
-            self.test_attributes,
-            self.test_class,
-            test_size=0.5,
-            train_size=0.5)
+            self.test_attributes, self.test_class, test_size=0.5, train_size=0.5)
         self.train_set = TrainSet(self.train_attributes, self.train_class, self.test_attributes, self.test_class,
                                   self.samples)
         self.best_param = BestParameters(self.validate_attributes, self.validate_class, self.test_attributes)
@@ -55,6 +49,13 @@ class Entity:
     # Function to train all the classifiers
     def get_trained_classifiers(self, neighbors):
         return self.train_set.get_trained_classifiers(neighbors)
+
+    # Functions to combine the result of multiples classifiers
+    def get_majority_rule(self, classifiers):
+        return self.test_set.voting_classifier(classifiers, 'hard')
+
+    def get_sum_rule(self, classifiers):
+        return self.test_set.voting_classifier(classifiers, 'soft')
 
     # Function to test all the classifiers
     def get_tested_classifier(self, classifier, name):
