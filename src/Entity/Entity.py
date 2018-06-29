@@ -57,6 +57,12 @@ class Entity:
     def get_sum_rule(self, classifiers):
         return self.test_set.voting_classifier(classifiers, 'soft')
 
+    def get_max_rule(self, classifiers):
+        return self.test_set.generic_rule(classifiers, 'max')
+
+    def get_min_rule(self, classifiers):
+        return self.test_set.generic_rule(classifiers, 'min')
+
     # Function to test all the classifiers
     def get_tested_classifier(self, classifier, name):
         classifier_test_result = []
