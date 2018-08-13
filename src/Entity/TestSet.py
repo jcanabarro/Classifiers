@@ -29,3 +29,24 @@ class TestSet:
                                          classifiers[3], classifiers[4]])
         ensemble_clf = EnsembleClassifier(ensemble=ensemble, combiner=Combiner(rule))
         return ensemble_clf.predict(self.test_attributes)
+
+    def borda_count(self, classifiers):
+        self.predictions_ = list()
+        for classifier in classifiers:
+            self.predictions_.append(classifier.predict_proba(self.test_attributes))
+
+        self.predictions_ = dict(np.ndenumerate(self.predictions_))
+        scores = {}
+        for l in self.predictions_:
+            for idx, elem in enumerate(reversed(l)):
+                if not elem in scores:
+                    scores[elem] = 0
+                else:
+                    scores[elem] += idx
+        return sorted(scores.keys(), key=lambda element: scores[element])
+
+    def prod_rule(self, classifiers):
+        self.predictions_ = list()
+        for classifier in classifiers:
+            self.predictions_.append(classifier.predict_proba(self.test_attributes))
+        return np.prod(self.predictions_)

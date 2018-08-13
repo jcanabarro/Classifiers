@@ -1,10 +1,10 @@
-from src.Entity.BasesObject.Banana import Banana
+from src.Entity.BasesObject.Adult import Adult
 
-banana = Banana()
+adult = Adult()
 
-knn = banana.get_trained_classifiers(3)
+classifiers = adult.get_trained_classifiers(3)
 # print(knn)
 
-a = banana.get_min_rule(knn)
+a = adult.get_borda_rule(classifiers)
 
 print(a)

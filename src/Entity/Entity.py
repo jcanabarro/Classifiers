@@ -57,11 +57,23 @@ class Entity:
     def get_sum_rule(self, classifiers):
         return self.test_set.voting_classifier(classifiers, 'soft')
 
+    def get_borda_rule(self, classifiers):
+        return self.test_set.borda_count(classifiers)
+
+    def get_prod_rule(self, classifiers):
+        return self.test_set.prod_rule(classifiers)
+
     def get_max_rule(self, classifiers):
         return self.test_set.generic_rule(classifiers, 'max')
 
     def get_min_rule(self, classifiers):
         return self.test_set.generic_rule(classifiers, 'min')
+
+    def get_mean_rule(self, classifiers):
+        return self.test_set.generic_rule(classifiers, 'mean')
+
+    def get_median_rule(self, classifiers):
+        return self.test_set.generic_rule(classifiers, 'median')
 
     # Function to test all the classifiers
     def get_tested_classifier(self, classifier, name):
