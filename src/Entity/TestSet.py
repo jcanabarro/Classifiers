@@ -46,7 +46,7 @@ class TestSet:
         return sorted(scores.keys(), key=lambda element: scores[element])
 
     def prod_rule(self, classifiers):
-        self.predictions_ = list()
+        predictions_ = list()
         for classifier in classifiers:
-            self.predictions_.append(classifier.predict_proba(self.test_attributes))
-        return np.prod(self.predictions_)
+            predictions_.append(classifier.predict_proba(self.test_attributes))
+        return np.argmax(np.prod(predictions_, axis=0), axis=-1)
