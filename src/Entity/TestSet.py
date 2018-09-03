@@ -1,8 +1,9 @@
 import numpy as np
-from brew.combination import Combiner
+# from brew.combination import Combiner
 from sklearn.ensemble import VotingClassifier
-from brew import Ensemble, EnsembleClassifier
-
+# from brew import Ensemble, EnsembleClassifier
+from brew.combination.combiner import Combiner
+from brew.base import Ensemble, EnsembleClassifier
 
 class TestSet:
 
