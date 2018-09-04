@@ -1,7 +1,5 @@
 import numpy as np
 from sklearn.ensemble import VotingClassifier
-from brew.combination.combiner import Combiner
-from brew.base import Ensemble, EnsembleClassifier
 
 
 class TestSet:
@@ -11,11 +9,11 @@ class TestSet:
         self.test_attributes = test_attributes
         self.test_class = test_class
 
-    def get_tested_classifier(self, classifier):
-        return classifier.predict(self.test_attributes)
-
-    def get_proba_tested_classifier(self, classifier):
-        return classifier.predict_proba(self.test_attributes)
+    def predictions_result(self, classifiers):
+        predictions_ = list()
+        for classifier in classifiers:
+            predictions_.append(classifier.predict_proba(self.test_attributes))
+        return predictions_
 
     def voting_classifier(self, classifiers, rule):
         result = VotingClassifier(estimators=[('knn', classifiers[0]), ('svm', classifiers[1]),
@@ -23,13 +21,6 @@ class TestSet:
                                               ('nb', classifiers[4])], voting=rule)
         result.fit(self.test_attributes, np.ravel(self.test_class))
         return result.predict(self.test_attributes)
-
-    def generic_rule(self, classifiers, rule):
-        self.test_attributes = self.test_attributes.reset_index(drop=True)
-        ensemble = Ensemble(classifiers=[classifiers[0], classifiers[1], classifiers[2],
-                                         classifiers[3], classifiers[4]])
-        ensemble_clf = EnsembleClassifier(ensemble=ensemble, combiner=Combiner(rule))
-        return ensemble_clf.predict(self.test_attributes)
 
     def borda_count(self, classifiers):
         for classifier in classifiers:
@@ -39,10 +30,18 @@ class TestSet:
                 predictions.append([index for prob, index in sorted_by_class])
             self.predictions_.append(predictions)
         return np.argmax(np.sum(np.array(self.predictions_), axis=0), axis=-1)
-        # return np.sum(np.array(self.predictions_), axis=0)
 
     def prod_rule(self, classifiers):
-        predictions_ = list()
-        for classifier in classifiers:
-            predictions_.append(classifier.predict_proba(self.test_attributes))
-        return np.argmax(np.prod(predictions_, axis=0), axis=-1)
+        return np.argmax(np.prod(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def max_rule(self, classifiers):
+        return np.argmax(np.max(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def min_rule(self, classifiers):
+        return np.argmax(np.min(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def median_rule(self, classifiers):
+        return np.argmax(np.median(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def mean_rule(self, classifiers):
+        return np.argmax(np.mean(self.predictions_result(classifiers), axis=0), axis=-1)

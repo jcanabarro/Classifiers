@@ -8,7 +8,6 @@ from sklearn.model_selection import train_test_split
 from src.Entity.BestParameters import BestParameters
 from src.Entity.TestSet import TestSet
 from src.Entity.TrainSet import TrainSet
-from src.ToCsv import ToCsv
 
 
 class Entity:
@@ -59,6 +58,12 @@ class Entity:
         return acc / len(self.test_class)
 
     # Functions to combine the result of multiples classifiers
+
+    def fix_argmax_value(self, results):
+        for idx, result in enumerate(results):
+            results[idx] += 1
+        return results
+
     def get_majority_rule(self, classifiers):
         return self.test_set.voting_classifier(classifiers, 'hard')
 
@@ -68,44 +73,30 @@ class Entity:
 
     def get_borda_rule(self, classifiers):
         borda_result = self.test_set.borda_count(classifiers)
-        for idx, result in enumerate(borda_result):
-            borda_result[idx] += 1
+        borda_result = self.fix_argmax_value(borda_result)
         return borda_result, self.get_proba(borda_result)
 
     def get_prod_rule(self, classifiers):
         prod_result = self.test_set.prod_rule(classifiers)
+        prod_result = self.fix_argmax_value(prod_result)
         return prod_result, self.get_proba(prod_result)
 
     def get_max_rule(self, classifiers):
-        max_result = self.test_set.generic_rule(classifiers, 'max')
+        max_result = self.test_set.max_rule(classifiers)
+        max_result = self.fix_argmax_value(max_result)
         return max_result, self.get_proba(max_result)
 
     def get_min_rule(self, classifiers):
-        min_result = self.test_set.generic_rule(classifiers, 'min')
-        print(min_result)
+        min_result = self.test_set.min_rule(classifiers)
+        min_result = self.fix_argmax_value(min_result)
         return min_result, self.get_proba(min_result)
 
     def get_mean_rule(self, classifiers):
-        mean_result = self.test_set.generic_rule(classifiers, 'mean')
+        mean_result = self.test_set.mean_rule(classifiers)
+        mean_result = self.fix_argmax_value(mean_result)
         return mean_result, self.get_proba(mean_result)
 
     def get_median_rule(self, classifiers):
-        median_result = self.test_set.generic_rule(classifiers, 'median')
+        median_result = self.test_set.median_rule(classifiers)
+        median_result = self.fix_argmax_value(median_result)
         return median_result, self.get_proba(median_result)
-
-    # Function to test all the classifiers
-    def get_tested_classifier(self, classifier, name):
-        classifier_test_result = []
-        classifier_proba_test_result = []
-        for i in range(20):
-            classifier_test_result.append(self.test_set.get_tested_classifier(classifier))
-            classifier_proba_test_result.append(self.test_set.get_proba_tested_classifier(classifier))
-
-        data_frame_result = pd.DataFrame(classifier_test_result).T
-        data_frame_proba = pd.DataFrame.from_records(classifier_proba_test_result).T
-        all_data_frames = [data_frame_result, data_frame_proba]
-        for df in all_data_frames:
-            df.columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                          11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-        # Path in this case already have the folder inside de function, and also have the csv extension
-        ToCsv().save_on_csv(name + 'Result' + self.path, pd.concat(all_data_frames, axis=1).reset_index(drop=True))
