@@ -70,29 +70,24 @@ base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', '
                'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
                'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
 
-classifiers = adult.get_trained_classifiers(3)
-result, proba = adult.get_median_rule(classifiers)
-print(result)
-print(proba)
+for base in base_name:
+    classifier_directory = '../ClassifierParam/' + base + '/'
+    result_directory = '../ClassifierResult/' + base + '/'
+    if not os.path.exists(classifier_directory):
+        os.makedirs(classifier_directory)
+    if not os.path.exists(result_directory):
+        os.makedirs(result_directory)
 
-# for base in base_name:
-#     classifier_directory = '../ClassifierParam/' + base + '/'
-#     result_directory = '../ClassifierResult/' + base + '/'
-#     if not os.path.exists(classifier_directory):
-#         os.makedirs(classifier_directory)
-#     if not os.path.exists(result_directory):
-#         os.makedirs(result_directory)
-#
-# for idx, base in enumerate(bases):
-#     proba_final = []
-#     for i in range(0, 20):
-#         classifiers = base.get_trained_classifiers(3)
-#         results, proba = base.get_prod_rule(classifiers)
-#         proba_final.append(proba)
-#         with open('../ClassifierParam/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', 'w') as f:
-#             for item in classifiers:
-#                 f.write("%s\n" % item.base_estimator.get_params())
-#         del classifiers[:]
-#         np.savetxt('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', results, delimiter=",", fmt="%f")
-#     print(base_name[idx] + " ", end='')
-#     print(np.sum(proba_final) / len(proba_final))
+for idx, base in enumerate(bases):
+    proba_final = []
+    for i in range(0, 20):
+        classifiers = base.get_trained_classifiers(3)
+        results, proba = base.get_prod_rule(classifiers)
+        proba_final.append(proba)
+        with open('../ClassifierParam/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', 'w') as f:
+            for item in classifiers:
+                f.write("%s\n" % item.base_estimator.get_params())
+        del classifiers[:]
+        np.savetxt('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', results, delimiter=",", fmt="%f")
+    print(base_name[idx] + " ", end='')
+    print(np.sum(proba_final) / len(proba_final))
