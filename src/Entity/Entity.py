@@ -50,48 +50,48 @@ class Entity:
     def get_trained_classifiers(self, neighbors):
         return self.train_set.get_trained_classifiers(neighbors)
 
+    def get_proba(self, predictions):
+        acc = 0
+        for index, result in enumerate(predictions):
+            expected = self.test_class.iloc[index][0]
+            if expected == result:
+                acc += 1
+        return acc / len(self.test_class)
+
     # Functions to combine the result of multiples classifiers
     def get_majority_rule(self, classifiers):
         return self.test_set.voting_classifier(classifiers, 'hard')
 
     def get_sum_rule(self, classifiers):
         sum_result = self.test_set.voting_classifier(classifiers, 'soft')
-        acc = 0
-        for index, result in enumerate(sum_result):
-            expected = self.test_class.iloc[index][0]
-            if expected == result:
-                acc += 1
-        return sum_result, acc / len(self.test_class)
+        return sum_result, self.get_proba(sum_result)
 
     def get_borda_rule(self, classifiers):
-
         borda_result = self.test_set.borda_count(classifiers)
-
         for idx, result in enumerate(borda_result):
             borda_result[idx] += 1
-
-        acc = 0
-
-        for index, result in enumerate(borda_result):
-            expected = self.test_class.iloc[index][0]
-            if expected == result:
-                acc += 1
-        return borda_result, acc / len(self.test_class)
+        return borda_result, self.get_proba(borda_result)
 
     def get_prod_rule(self, classifiers):
-        return self.test_set.prod_rule(classifiers)
+        prod_result = self.test_set.prod_rule(classifiers)
+        return prod_result, self.get_proba(prod_result)
 
     def get_max_rule(self, classifiers):
-        return self.test_set.generic_rule(classifiers, 'max')
+        max_result = self.test_set.generic_rule(classifiers, 'max')
+        return max_result, self.get_proba(max_result)
 
     def get_min_rule(self, classifiers):
-        return self.test_set.generic_rule(classifiers, 'min')
+        min_result = self.test_set.generic_rule(classifiers, 'min')
+        print(min_result)
+        return min_result, self.get_proba(min_result)
 
     def get_mean_rule(self, classifiers):
-        return self.test_set.generic_rule(classifiers, 'mean')
+        mean_result = self.test_set.generic_rule(classifiers, 'mean')
+        return mean_result, self.get_proba(mean_result)
 
     def get_median_rule(self, classifiers):
-        return self.test_set.generic_rule(classifiers, 'median')
+        median_result = self.test_set.generic_rule(classifiers, 'median')
+        return median_result, self.get_proba(median_result)
 
     # Function to test all the classifiers
     def get_tested_classifier(self, classifier, name):

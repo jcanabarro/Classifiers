@@ -82,9 +82,9 @@ for idx, base in enumerate(bases):
     proba_final = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
-        results, proba = base.get_borda_rule(classifiers)
+        results, proba = base.get_mean_rule(classifiers)
         proba_final.append(proba)
-        with open('../ClassifierParam/' + base_name[idx] + '/Classifier' + repr(i) + '.csv', 'w') as f:
+        with open('../ClassifierParam/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', 'w') as f:
             for item in classifiers:
                 f.write("%s\n" % item.base_estimator.get_params())
         del classifiers[:]
