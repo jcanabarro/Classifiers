@@ -1,13 +1,13 @@
 import numpy as np
-# from brew.combination import Combiner
 from sklearn.ensemble import VotingClassifier
-# from brew import Ensemble, EnsembleClassifier
 from brew.combination.combiner import Combiner
 from brew.base import Ensemble, EnsembleClassifier
+
 
 class TestSet:
 
     def __init__(self, test_attributes, test_class):
+        self.predictions_ = list()
         self.test_attributes = test_attributes
         self.test_class = test_class
 
@@ -32,7 +32,6 @@ class TestSet:
         return ensemble_clf.predict(self.test_attributes)
 
     def borda_count(self, classifiers):
-        self.predictions_ = list()
         for classifier in classifiers:
             predictions = []
             for prediction in classifier.predict_proba(self.test_attributes):
@@ -40,6 +39,7 @@ class TestSet:
                 predictions.append([index for prob, index in sorted_by_class])
             self.predictions_.append(predictions)
         return np.argmax(np.sum(np.array(self.predictions_), axis=0), axis=-1)
+        # return np.sum(np.array(self.predictions_), axis=0)
 
     def prod_rule(self, classifiers):
         predictions_ = list()

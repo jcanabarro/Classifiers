@@ -1,10 +1,12 @@
 from src.Entity.BasesObject.Adult import Adult
+import numpy as np
 
 adult = Adult()
 
 classifiers = adult.get_trained_classifiers(3)
-# print(knn)
 
-a = adult.get_borda_rule(classifiers)
+results = adult.get_borda_rule(classifiers)
 
-print(a)
+print(results)
+
+# np.savetxt("../ExecutionResult/resutls.csv", results, delimiter=",", fmt="%f")

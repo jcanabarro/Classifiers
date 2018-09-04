@@ -55,10 +55,28 @@ class Entity:
         return self.test_set.voting_classifier(classifiers, 'hard')
 
     def get_sum_rule(self, classifiers):
-        return self.test_set.voting_classifier(classifiers, 'soft')
+        sum_result = self.test_set.voting_classifier(classifiers, 'soft')
+        acc = 0
+        for index, result in enumerate(sum_result):
+            expected = self.test_class.iloc[index][0]
+            if expected == result:
+                acc += 1
+        return sum_result, acc / len(self.test_class)
 
     def get_borda_rule(self, classifiers):
-        return self.test_set.borda_count(classifiers)
+
+        borda_result = self.test_set.borda_count(classifiers)
+
+        for idx, result in enumerate(borda_result):
+            borda_result[idx] += 1
+
+        acc = 0
+
+        for index, result in enumerate(borda_result):
+            expected = self.test_class.iloc[index][0]
+            if expected == result:
+                acc += 1
+        return borda_result, acc / len(self.test_class)
 
     def get_prod_rule(self, classifiers):
         return self.test_set.prod_rule(classifiers)
