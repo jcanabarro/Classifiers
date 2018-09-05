@@ -63,12 +63,12 @@ weaning = Weaning()
 wine = Wine()
 
 bases = [adult, banana, blood, ctg, diabetes, ecoli, faults, german, glass, haberman, heart, ilpd, ionosphere,
-             laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
-             vehicle, vertebral, wbc, wdvg, weaning, wine]
+         laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
+         vehicle, vertebral, wbc, wdvg, weaning, wine]
 
 base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-               'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-               'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
+             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
 
 for base in base_name:
     classifier_directory = '../ClassifierParam/' + base + '/'
@@ -88,6 +88,8 @@ for idx, base in enumerate(bases):
             for item in classifiers:
                 f.write("%s\n" % item.base_estimator.get_params())
         del classifiers[:]
-        np.savetxt('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', results, delimiter=",", fmt="%f")
-    print(base_name[idx] + " ", end='')
-    print(np.sum(proba_final) / len(proba_final))
+        with open('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule.csv', 'w') as f:
+            for index, proba in enumerate(proba_final):
+                f.write(repr(index) + ": %.4f\n" % proba)
+    with open('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule.csv', 'a') as f:
+        f.write("FinalProba: %.4f\n" % np.sum(proba_final) / len(proba_final))
