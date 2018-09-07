@@ -27,7 +27,8 @@ class TestSet:
             predictions = []
             for prediction in classifier.predict_proba(self.test_attributes):
                 sorted_by_class = sorted([(prob, index + 1) for index, prob in enumerate(prediction)])
-                predictions.append([index for prob, index in sorted_by_class])
+                sorted_by_index = sorted([(index, weight + 1) for weight, (prob, index) in enumerate(sorted_by_class)])
+                predictions.append([weight for prob, weight in sorted_by_index])
             self.predictions_.append(predictions)
         return np.argmax(np.sum(np.array(self.predictions_), axis=0), axis=-1)
 

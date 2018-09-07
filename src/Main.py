@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import time
 from src.Entity.BasesObject.Adult import Adult
 from src.Entity.BasesObject.Banana import Banana
 from src.Entity.BasesObject.Blood import Blood
@@ -80,16 +81,23 @@ for base in base_name:
 
 for idx, base in enumerate(bases):
     proba_final = []
+    execution_time = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
-        results, proba = base.get_prod_rule(classifiers)
+        start_time = time.time()
+        results, proba = base.get_borda_rule(classifiers)
+        execution_time.append(time.time() - start_time)
         proba_final.append(proba)
-        with open('../ClassifierParam/' + base_name[idx] + '/BordaCounteRule' + repr(i) + '.csv', 'w') as f:
+
+        with open('../ClassifierParam/' + base_name[idx] + '/BordaRule' + repr(i) + '.csv', 'w') as f:
             for item in classifiers:
                 f.write("%s\n" % item.base_estimator.get_params())
         del classifiers[:]
-        with open('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule.csv', 'w') as f:
+
+        with open('../ClassifierResult/' + base_name[idx] + '/BordaRule.csv', 'w') as f:
             for index, proba in enumerate(proba_final):
-                f.write(repr(index) + ": %.4f\n" % proba)
-    with open('../ClassifierResult/' + base_name[idx] + '/BordaCounteRule.csv', 'a') as f:
-        f.write("FinalProba: %.4f\n" % np.sum(proba_final) / len(proba_final))
+                f.write(repr(index) + ": %.4f %.4f\n" % ( proba, execution_time[index]))
+
+    with open('../ClassifierResult/' + base_name[idx] + '/BordaRule.csv', 'a') as f:
+        f.write("MeanProba: %.4f\n" % float(np.sum(proba_final) / len(proba_final)))
+        f.write("MeanTime: %.4f\n" % float(np.sum(execution_time) / len(execution_time)))
