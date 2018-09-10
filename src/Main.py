@@ -63,13 +63,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [adult, banana, blood, ctg, diabetes, ecoli, faults, german, glass, haberman, heart, ilpd, ionosphere,
-         laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
-         vehicle, vertebral, wbc, wdvg, weaning, wine]
+bases = [adult]
 
-base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+base_name = ['adult']
 
 for base in base_name:
     classifier_directory = '../ClassifierParam/' + base + '/'
@@ -79,25 +75,31 @@ for base in base_name:
     if not os.path.exists(result_directory):
         os.makedirs(result_directory)
 
+
 for idx, base in enumerate(bases):
     proba_final = []
     execution_time = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
+        classifiers[0] = base.get_knn_best_param(classifiers[0])
+        classifiers[1] = base.get_svm_best_param(classifiers[1])
+        classifiers[2] = base.get_dt_best_param(classifiers[2])
+        classifiers[3] = base.get_mlp_best_param(classifiers[3])
+        classifiers[4] = base.get_nb_best_param(classifiers[4])
         start_time = time.time()
         results, proba = base.get_borda_rule(classifiers)
         execution_time.append(time.time() - start_time)
         proba_final.append(proba)
 
-        with open('../ClassifierParam/' + base_name[idx] + '/BordaRule' + repr(i) + '.csv', 'w') as f:
+        with open('../ClassifierParam/' + base_name[idx] + '/MajorityRule' + repr(i) + '.csv', 'w') as f:
             for item in classifiers:
                 f.write("%s\n" % item.base_estimator.get_params())
         del classifiers[:]
 
-        with open('../ClassifierResult/' + base_name[idx] + '/BordaRule.csv', 'w') as f:
+        with open('../ClassifierResult/' + base_name[idx] + '/MajorityRule.csv', 'w') as f:
             for index, proba in enumerate(proba_final):
-                f.write(repr(index) + ": %.4f %.4f\n" % ( proba, execution_time[index]))
+                f.write(repr(index) + ": %.4f %.4f\n" % (proba, execution_time[index]))
 
-    with open('../ClassifierResult/' + base_name[idx] + '/BordaRule.csv', 'a') as f:
+    with open('../ClassifierResult/' + base_name[idx] + '/MajorityRule.csv', 'a') as f:
         f.write("MeanProba: %.4f\n" % float(np.sum(proba_final) / len(proba_final)))
         f.write("MeanTime: %.4f\n" % float(np.sum(execution_time) / len(execution_time)))

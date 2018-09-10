@@ -36,11 +36,11 @@ class Entity:
     def get_knn_best_param(self, classifier):
         return self.best_param.get_knn_best_param(classifier)
 
-    def get_naive_bayes_best_param(self, classifier):
-        return self.best_param.get_naive_bayes_best_param(classifier)
+    def get_nb_best_param(self, classifier):
+        return self.best_param.get_nb_best_param(classifier)
 
-    def get_tree_decision_best_params(self, classifier):
-        return self.best_param.get_tree_decision_best_param(classifier)
+    def get_dt_best_param(self, classifier):
+        return self.best_param.get_dt_best_param(classifier)
 
     def get_mlp_best_param(self, classifier):
         return self.best_param.get_mlp_best_param(classifier)
@@ -65,7 +65,8 @@ class Entity:
         return results
 
     def get_majority_rule(self, classifiers):
-        return self.test_set.voting_classifier(classifiers, 'hard')
+        majority_result = self.test_set.voting_classifier(classifiers, 'hard')
+        return majority_result, self.get_proba(majority_result)
 
     def get_sum_rule(self, classifiers):
         sum_result = self.test_set.voting_classifier(classifiers, 'soft')

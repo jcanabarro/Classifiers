@@ -34,12 +34,12 @@ class BestParameters:
         classifier = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(classifier)
 
-    def get_naive_bayes_best_param(self, classifier):
+    def get_nb_best_param(self, classifier):
         tuned_parameters = {}
         classifier = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(classifier)
 
-    def get_tree_decision_best_param(self, classifier):
+    def get_dt_best_param(self, classifier):
         tuned_parameters = {
             "base_estimator__criterion": ["gini", "entropy"],
             "base_estimator__min_samples_split": [2, 10, 20],
