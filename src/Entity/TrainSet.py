@@ -49,4 +49,3 @@ class TrainSet:
 
     def get_trained_classifiers(self, neighbors):
         return self.generic_train([get_knn(neighbors), get_svm(), get_dt(), get_mlp(), get_nb()])
-        # return self.generic_train([get_mlp()])

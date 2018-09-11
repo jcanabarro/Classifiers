@@ -1,5 +1,4 @@
 import numpy as np
-import os
 import time
 from src.Entity.BasesObject.Adult import Adult
 from src.Entity.BasesObject.Banana import Banana
@@ -63,17 +62,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [banana]
+bases = [adult, banana, blood, ctg, diabetes]
 
-base_name = ['banana']
-
-# for base in base_name:
-#     classifier_directory = '../ClassifierParam/' + base + '/'
-#     result_directory = '../ClassifierResult/' + base + '/'
-#     if not os.path.exists(classifier_directory):
-#         os.makedirs(classifier_directory)
-#     if not os.path.exists(result_directory):
-#         os.makedirs(result_directory)
+base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes']
 
 for idx, base in enumerate(bases):
     borda_proba_final = []
