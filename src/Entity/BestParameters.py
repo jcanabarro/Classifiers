@@ -57,7 +57,6 @@ class BestParameters:
             'learning_rate': ["constant", "invscaling", "adaptive"],
             'hidden_layer_sizes': [(10,), (20,), (30,), (40,), (50,),
                                    (60,), (70,), (80,), (90,), (100,)],
-            'alpha': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
             'activation': ["logistic", "relu"],
             'max_iter': [100, 200, 300, 400, 500]
         }
