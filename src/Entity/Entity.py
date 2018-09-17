@@ -77,7 +77,9 @@ class Entity:
         return majority_result, self.get_proba(majority_result)
 
     def get_sum_rule(self, classifiers):
-        sum_result = self.test_set.voting_classifier(classifiers, 'soft')
+        # sum_result = self.test_set.voting_classifier(classifiers, 'soft')
+        sum_result = self.test_set.sum_rule(classifiers)
+        sum_result = fix_argmax_value(sum_result)
         return sum_result, self.get_proba(sum_result)
 
     def get_borda_rule(self, classifiers):

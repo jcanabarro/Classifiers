@@ -62,9 +62,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [vertebral, wbc, wdvg, weaning, wine]
+bases = [ecoli, faults, german, glass]
 
-base_name = ['vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+base_name = ['ecoli', 'faults', 'german', 'glass']
 
 for idx, base in enumerate(bases):
     borda_proba_final = []
@@ -137,13 +137,12 @@ for idx, base in enumerate(bases):
         with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
             f.write("Borda Time\tProd Time\tMean Time\tMedian Time\tMax Time\tMin Time\tSum Time\tMaj Time\n")
             for index, proba in enumerate(borda_proba_final):
-                f.write(repr(index) + ": %.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f "
-                                      "%.4f\t%.4f %.4f\n "
+                f.write("%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\n"
                         % (proba, borda_execution_time[index], prod_proba_final[index], prod_execution_time[index],
                            mean_proba_final[index], mean_execution_time[index], median_proba_final[index],
                            median_execution_time[index], max_proba_final[index], max_execution_time[index],
-                           min_proba_final[index], min_execution_time[index], sum_proba_final[index], sum_execution_time[index]
-                           , maj_proba_final[index], maj_execution_time[index]))
+                           min_proba_final[index], min_execution_time[index], sum_proba_final[index],
+                           sum_execution_time[index], maj_proba_final[index], maj_execution_time[index]))
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
         f.write("\nBase Means\n")
         f.write("%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f\t%.4f\n"

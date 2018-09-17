@@ -46,3 +46,6 @@ class TestSet:
 
     def mean_rule(self, classifiers):
         return np.argmax(np.mean(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def sum_rule(self, classifiers):
+        return np.argmax(np.sum(self.predictions_result(classifiers), axis=0), axis=-1)
