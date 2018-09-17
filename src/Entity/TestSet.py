@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import accuracy_score
 
 
 class TestSet:
@@ -46,3 +47,7 @@ class TestSet:
 
     def mean_rule(self, classifiers):
         return np.argmax(np.mean(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def test_classifier(self, classifier):
+        classifier = classifier.predict(self.test_attributes)
+        return accuracy_score(self.test_class, classifier)
