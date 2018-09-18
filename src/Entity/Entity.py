@@ -2,8 +2,10 @@ import os
 
 import pandas as pd
 import numpy as np
+import pickle as pk
 
 # Other functionality used by sklearn
+from sklearn.externals import joblib
 from sklearn.model_selection import train_test_split
 from src.Entity.BestParameters import BestParameters
 from src.Entity.TestSet import TestSet
@@ -35,7 +37,13 @@ class Entity:
     def get_value(self, attr):
         return self.data_frame[attr]
 
-    # Functions to get all the better parameters
+    def save_persistence_model(self, classifier, classifier_name, base_name):
+        joblib.dump(classifier, '../ClassifierPersistenceModel/' + base_name + '/' + classifier_name + '.pkl')
+
+    def load_persistence_model(self, classifier, name):
+        joblib.dump(classifier, '../ClassifierPersistenceModel/' + name + '.pkl')
+
+        # Functions to get all the better parameters
     def get_svm_best_param(self, classifier):
         return self.best_param.get_svm_best_param(classifier)
 
