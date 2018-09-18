@@ -52,11 +52,11 @@ class Entity:
         return self.best_param.get_mlp_best_param(classifier)
 
     def set_best_params(self, classifiers):
-        classifiers[0] = self.get_knn_best_param(classifiers[0].base_estimator)
-        classifiers[1] = self.get_svm_best_param(classifiers[1].base_estimator)
-        classifiers[2] = self.get_dt_best_param(classifiers[2].base_estimator)
-        classifiers[3] = self.get_mlp_best_param(classifiers[3].base_estimator)
-        classifiers[4] = self.get_nb_best_param(classifiers[4].base_estimator)
+        classifiers[0].base_estimator = self.get_knn_best_param(classifiers[0].base_estimator)
+        classifiers[1].base_estimator = self.get_svm_best_param(classifiers[1].base_estimator)
+        classifiers[2].base_estimator = self.get_dt_best_param(classifiers[2].base_estimator)
+        classifiers[3].base_estimator = self.get_mlp_best_param(classifiers[3].base_estimator)
+        classifiers[4].base_estimator = self.get_nb_best_param(classifiers[4].base_estimator)
         return classifiers
 
     # Function to train all the classifiers

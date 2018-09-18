@@ -62,9 +62,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [ecoli, faults, german, glass]
+bases = [faults, german, glass]
 
-base_name = ['ecoli', 'faults', 'german', 'glass']
+base_name = ['faults', 'german', 'glass']
 
 for idx, base in enumerate(bases):
     borda_proba_final = []
@@ -131,21 +131,22 @@ for idx, base in enumerate(bases):
         with open('../ClassifierParam/' + base_name[idx] + '.csv', 'a') as f:
             f.write("Execution %d:\n" % i)
             for item in classifiers:
-                f.write("\t%s\n" % item.get_params())
+                f.write("\t%s\n" % item.base_estimator.get_params())
         del classifiers[:]
 
         with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-            f.write("Borda Time\tProd Time\tMean Time\tMedian Time\tMax Time\tMin Time\tSum Time\tMaj Time\n")
+            f.write("Borda\tTime\tProd\tTime\tMean\tTime\tMedian\tTime\tMax\tTime\tMi\tTime\tSum\tTime\tMaj\tTime\n")
             for index, proba in enumerate(borda_proba_final):
-                f.write("%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\n"
+                f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
                         % (proba, borda_execution_time[index], prod_proba_final[index], prod_execution_time[index],
                            mean_proba_final[index], mean_execution_time[index], median_proba_final[index],
                            median_execution_time[index], max_proba_final[index], max_execution_time[index],
                            min_proba_final[index], min_execution_time[index], sum_proba_final[index],
-                           sum_execution_time[index], maj_proba_final[index], maj_execution_time[index]))
+                           sum_execution_time[index]
+                           , maj_proba_final[index], maj_execution_time[index]))
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
         f.write("\nBase Means\n")
-        f.write("%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f\t%.4f\n"
+        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
                 % (float(np.sum(borda_proba_final) / len(borda_proba_final)),
                    float(np.sum(borda_execution_time) / len(borda_execution_time)),
                    float(np.sum(prod_proba_final) / len(prod_proba_final)),
@@ -158,5 +159,7 @@ for idx, base in enumerate(bases):
                    float(np.sum(max_execution_time) / len(max_execution_time)),
                    float(np.sum(min_proba_final) / len(min_proba_final)),
                    float(np.sum(min_execution_time) / len(min_execution_time)),
+                   float(np.sum(sum_proba_final) / len(sum_proba_final)),
                    float(np.sum(sum_execution_time) / len(sum_execution_time)),
+                   float(np.sum(maj_proba_final) / len(maj_proba_final)),
                    float(np.sum(maj_execution_time) / len(maj_execution_time))))
