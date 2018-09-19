@@ -23,6 +23,22 @@ class TestSet:
         result.fit(self.test_attributes, np.ravel(self.test_class))
         return result.predict(self.test_attributes)
 
+    def majority_rule(self, classifiers):
+        self.predictions_ = []
+        for classifier in classifiers:
+            predictions = []
+            for index, votes in enumerate(classifier.predict_proba(self.test_attributes)):
+                votes_count = {}
+                for vote in votes:
+                    v = self.test_class.iloc[index][0]
+                    if v not in votes_count:
+                        votes_count[v] = 1
+                    else:
+                        votes_count[v] += 1
+                predictions.append(votes_count.items())
+            self.predictions_.append(predictions)
+        return np.argmax(np.sum(np.array(self.predictions_), axis=0), axis=-1)
+
     def borda_count(self, classifiers):
         for classifier in classifiers:
             predictions = []
@@ -48,6 +64,5 @@ class TestSet:
     def mean_rule(self, classifiers):
         return np.argmax(np.mean(self.predictions_result(classifiers), axis=0), axis=-1)
 
-    def test_classifier(self, classifier):
-        classifier = classifier.predict(self.test_attributes)
-        return accuracy_score(self.test_class, classifier)
+    def sum_rule(self, classifiers):
+        return np.argmax(np.sum(self.predictions_result(classifiers), axis=0), axis=-1)

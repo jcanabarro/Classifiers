@@ -73,11 +73,11 @@ class Entity:
 
     # Functions to combine the result of multiples classifiers
     def get_majority_rule(self, classifiers):
-        majority_result = self.test_set.voting_classifier(classifiers, 'hard')
+        majority_result = self.test_set.majority_rule(classifiers)
         return majority_result, self.get_proba(majority_result)
 
     def get_sum_rule(self, classifiers):
-        sum_result = self.test_set.voting_classifier(classifiers, 'soft')
+        sum_result = self.test_set.sum_rule(classifiers)
         return sum_result, self.get_proba(sum_result)
 
     def get_borda_rule(self, classifiers):

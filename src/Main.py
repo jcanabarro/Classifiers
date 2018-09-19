@@ -66,9 +66,13 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [mammo, monk, phoneme, segmentation, sonar, thyroid, vehicle, diabetes]
+bases = [adult, banana, blood, ctg, diabetes, ecoli, faults, german, glass, haberman, heart, ilpd, ionosphere,
+             laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
+             vehicle, vertebral, wbc, wdvg, weaning, wine]
 
-base_name = ['mammo', 'monk', 'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle''diabetes']
+base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
+               'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
+               'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
 
 for idx, base in enumerate(bases):
     borda_proba_final = []
@@ -78,7 +82,7 @@ for idx, base in enumerate(bases):
     max_proba_final = []
     min_proba_final = []
     sum_proba_final = []
-    maj_proba_final = []
+    # maj_proba_final = []
 
     borda_execution_time = []
     prod_execution_time = []
@@ -87,9 +91,9 @@ for idx, base in enumerate(bases):
     max_execution_time = []
     min_execution_time = []
     sum_execution_time = []
-    maj_execution_time = []
+    # maj_execution_time = []
 
-    for i in range(0, 20):
+    for i in range(0, 1):
         classifiers = base.get_trained_classifiers(3)
         classifiers = base.set_best_params(classifiers)
         start_time = time.time()
@@ -127,10 +131,10 @@ for idx, base in enumerate(bases):
         sum_execution_time.append(time.time() - start_time)
         sum_proba_final.append(sum_proba)
 
-        start_time = time.time()
-        maj_results, maj_proba = base.get_majority_rule(classifiers)
-        maj_execution_time.append(time.time() - start_time)
-        maj_proba_final.append(maj_proba)
+        # start_time = time.time()
+        # maj_results, maj_proba = base.get_majority_rule(classifiers)
+        # maj_execution_time.append(time.time() - start_time)
+        # maj_proba_final.append(maj_proba)
 
         with open('../ClassifierParam/' + base_name[idx] + '.csv', 'a') as f:
             f.write("Execution %d:\n" % i)
@@ -139,19 +143,17 @@ for idx, base in enumerate(bases):
         del classifiers[:]
 
         with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-            f.write("Borda Time\tProd Time\tMean Time\tMedian Time\tMax Time\tMin Time\tSum Time\tMaj Time\n")
+            f.write("Borda\tTime\tProd\tTime\tMean\tTime\tMedian\tTime\tMax\tTime\tMi\tTime\tSum\tTime\n")
             for index, proba in enumerate(borda_proba_final):
-                f.write(repr(index) + ": %.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f "
-                                      "%.4f\t%.4f %.4f\n"
+                f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
                         % (proba, borda_execution_time[index], prod_proba_final[index], prod_execution_time[index],
                            mean_proba_final[index], mean_execution_time[index], median_proba_final[index],
                            median_execution_time[index], max_proba_final[index], max_execution_time[index],
                            min_proba_final[index], min_execution_time[index], sum_proba_final[index],
-                           sum_execution_time[index]
-                           , maj_proba_final[index], maj_execution_time[index]))
+                           sum_execution_time[index]))
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
         f.write("\nBase Means\n")
-        f.write("%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\t%.4f %.4f\n"
+        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
                 % (float(np.sum(borda_proba_final) / len(borda_proba_final)),
                    float(np.sum(borda_execution_time) / len(borda_execution_time)),
                    float(np.sum(prod_proba_final) / len(prod_proba_final)),
@@ -165,6 +167,5 @@ for idx, base in enumerate(bases):
                    float(np.sum(min_proba_final) / len(min_proba_final)),
                    float(np.sum(min_execution_time) / len(min_execution_time)),
                    float(np.sum(sum_proba_final) / len(sum_proba_final)),
-                   float(np.sum(sum_execution_time) / len(sum_execution_time)),
-                   float(np.sum(maj_proba_final) / len(maj_proba_final)),
-                   float(np.sum(maj_execution_time) / len(maj_execution_time))))
+                   float(np.sum(sum_execution_time) / len(sum_execution_time))))
+
