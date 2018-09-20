@@ -2,7 +2,7 @@ import numpy as np
 import time
 import sys
 
-sys.path.append('/home/joao/Classifiers/')
+# sys.path.append('/home/joao/Classifiers/')
 
 from src.Entity.BasesObject.Adult import Adult
 from src.Entity.BasesObject.Banana import Banana
@@ -82,7 +82,8 @@ for idx, base in enumerate(bases):
     max_proba_final = []
     min_proba_final = []
     sum_proba_final = []
-    # maj_proba_final = []
+    majority_proba_final = []
+    ranking_proba_final = []
 
     borda_execution_time = []
     prod_execution_time = []
@@ -91,11 +92,13 @@ for idx, base in enumerate(bases):
     max_execution_time = []
     min_execution_time = []
     sum_execution_time = []
-    # maj_execution_time = []
+    majority_execution_time = []
+    ranking_execution_time = []
 
     for i in range(0, 1):
         classifiers = base.get_trained_classifiers(3)
         classifiers = base.set_best_params(classifiers)
+
         start_time = time.time()
         borda_results, borda_proba = base.get_borda_rule(classifiers)
         borda_execution_time.append(time.time() - start_time)
@@ -131,10 +134,15 @@ for idx, base in enumerate(bases):
         sum_execution_time.append(time.time() - start_time)
         sum_proba_final.append(sum_proba)
 
-        # start_time = time.time()
-        # maj_results, maj_proba = base.get_majority_rule(classifiers)
-        # maj_execution_time.append(time.time() - start_time)
-        # maj_proba_final.append(maj_proba)
+        start_time = time.time()
+        ranking_results, ranking_proba = base.get_ranking_rule(classifiers)
+        ranking_execution_time.append(time.time() - start_time)
+        ranking_proba_final.append(ranking_proba)
+
+        start_time = time.time()
+        majority_results, majority_proba = base.get_majority_rule(classifiers)
+        majority_execution_time.append(time.time() - start_time)
+        majority_proba_final.append(majority_proba)
 
         with open('../ClassifierParam/' + base_name[idx] + '.csv', 'a') as f:
             f.write("Execution %d:\n" % i)
@@ -143,29 +151,29 @@ for idx, base in enumerate(bases):
         del classifiers[:]
 
         with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-            f.write("Borda\tTime\tProd\tTime\tMean\tTime\tMedian\tTime\tMax\tTime\tMi\tTime\tSum\tTime\n")
+            f.write("Borda\tTime\tProd\tTime\tMean\tTime\tMedian\tTime\tMax\tTime\tMin\tTime\tSum\tTime\tMajority\tTime"
+                    "\tRaking\tTime\n")
             for index, proba in enumerate(borda_proba_final):
-                f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
-                        % (proba, borda_execution_time[index], prod_proba_final[index], prod_execution_time[index],
-                           mean_proba_final[index], mean_execution_time[index], median_proba_final[index],
-                           median_execution_time[index], max_proba_final[index], max_execution_time[index],
-                           min_proba_final[index], min_execution_time[index], sum_proba_final[index],
-                           sum_execution_time[index]))
+                f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
+                        "%.4f\t%.4f\t%.4f\t\n"
+                        % (proba, borda_execution_time[index],
+                            prod_proba_final[index], prod_execution_time[index],
+                            mean_proba_final[index], mean_execution_time[index],
+                            median_proba_final[index], median_execution_time[index],
+                            max_proba_final[index], max_execution_time[index],
+                            min_proba_final[index], min_execution_time[index],
+                            sum_proba_final[index], sum_execution_time[index],
+                            majority_proba_final[index], majority_execution_time[index],
+                            ranking_proba_final[index], ranking_execution_time[index]
+                           ))
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
-        f.write("\nBase Means\n")
-        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
+        f.write("Base Means\n")
+        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
                 % (float(np.sum(borda_proba_final) / len(borda_proba_final)),
-                   float(np.sum(borda_execution_time) / len(borda_execution_time)),
                    float(np.sum(prod_proba_final) / len(prod_proba_final)),
-                   float(np.sum(prod_execution_time) / len(prod_execution_time)),
                    float(np.sum(mean_proba_final) / len(mean_proba_final)),
-                   float(np.sum(mean_execution_time) / len(mean_execution_time)),
                    float(np.sum(median_proba_final) / len(median_proba_final)),
-                   float(np.sum(median_execution_time) / len(median_execution_time)),
                    float(np.sum(max_proba_final) / len(max_proba_final)),
-                   float(np.sum(max_execution_time) / len(max_execution_time)),
                    float(np.sum(min_proba_final) / len(min_proba_final)),
-                   float(np.sum(min_execution_time) / len(min_execution_time)),
                    float(np.sum(sum_proba_final) / len(sum_proba_final)),
-                   float(np.sum(sum_execution_time) / len(sum_execution_time))))
-
+                   float(np.sum(majority_proba_final) / len(majority_proba_final))))

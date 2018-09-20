@@ -51,6 +51,7 @@ class Entity:
     def get_mlp_best_param(self, classifier):
         return self.best_param.get_mlp_best_param(classifier)
 
+    # Function to get the best params of a list of classifiers
     def set_best_params(self, classifiers):
         classifiers[0].base_estimator = self.get_knn_best_param(classifiers[0].base_estimator)
         classifiers[1].base_estimator = self.get_svm_best_param(classifiers[1].base_estimator)
@@ -63,6 +64,7 @@ class Entity:
     def get_trained_classifiers(self, neighbors):
         return self.train_set.get_trained_classifiers(neighbors)
 
+    # Function to get proba result
     def get_proba(self, predictions):
         acc = 0
         for index, result in enumerate(predictions):
@@ -72,13 +74,20 @@ class Entity:
         return acc / len(self.test_class)
 
     # Functions to combine the result of multiples classifiers
-    def get_majority_rule(self, classifiers):
-        majority_result = self.test_set.majority_rule(classifiers)
-        return majority_result, self.get_proba(majority_result)
-
     def get_sum_rule(self, classifiers):
         sum_result = self.test_set.sum_rule(classifiers)
+        sum_result = fix_argmax_value(sum_result)
         return sum_result, self.get_proba(sum_result)
+
+    def get_ranking_rule(self, classifiers):
+        ranking_result = self.test_set.ranking_rule(classifiers)
+        ranking_result = fix_argmax_value(ranking_result)
+        return ranking_result, self.get_proba(ranking_result)
+
+    def get_majority_rule(self, classifiers):
+        majority_result = self.test_set.majority_rule(classifiers)
+        majority_result = fix_argmax_value(majority_result)
+        return majority_result, self.get_proba(majority_result)
 
     def get_borda_rule(self, classifiers):
         borda_result = self.test_set.borda_count(classifiers)
