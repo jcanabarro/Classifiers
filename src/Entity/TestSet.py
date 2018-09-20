@@ -54,4 +54,20 @@ class TestSet:
         return np.argmax(np.sum(self.predictions_result(classifiers), axis=0), axis=-1)
 
     def majority_rule(self, classifiers):
-        pass
+        final_prediction = list()
+        for classifier in classifiers:
+            predictions = []
+            for idx, prediction in enumerate(classifier.predict_proba(self.test_attributes)):
+                predictions.append(np.argmax(prediction))
+            final_prediction.append(predictions)
+        final_prediction = np.array(final_prediction).T
+        predictions = []
+        for votes in final_prediction:
+            votes_count = {}
+            for vote in votes:
+                if vote not in votes_count:
+                    votes_count[vote] = 1
+                else:
+                    votes_count[vote] += 1
+            predictions.append(sorted(votes_count.items(), reverse=True)[0][0])
+        return predictions

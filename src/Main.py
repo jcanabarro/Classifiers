@@ -2,7 +2,7 @@ import numpy as np
 import time
 import sys
 
-# sys.path.append('/home/joao/Classifiers/')
+sys.path.append('/home/joao/Classifiers/')
 
 from src.Entity.BasesObject.Adult import Adult
 from src.Entity.BasesObject.Banana import Banana
@@ -95,7 +95,7 @@ for idx, base in enumerate(bases):
     majority_execution_time = []
     ranking_execution_time = []
 
-    for i in range(0, 1):
+    for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
         classifiers = base.set_best_params(classifiers)
 
@@ -168,7 +168,7 @@ for idx, base in enumerate(bases):
                            ))
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
         f.write("Base Means\n")
-        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
+        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
                 % (float(np.sum(borda_proba_final) / len(borda_proba_final)),
                    float(np.sum(prod_proba_final) / len(prod_proba_final)),
                    float(np.sum(mean_proba_final) / len(mean_proba_final)),
@@ -176,4 +176,5 @@ for idx, base in enumerate(bases):
                    float(np.sum(max_proba_final) / len(max_proba_final)),
                    float(np.sum(min_proba_final) / len(min_proba_final)),
                    float(np.sum(sum_proba_final) / len(sum_proba_final)),
-                   float(np.sum(majority_proba_final) / len(majority_proba_final))))
+                   float(np.sum(majority_proba_final) / len(majority_proba_final)),
+                   float(np.sum(ranking_proba_final) / len(ranking_proba_final))))
