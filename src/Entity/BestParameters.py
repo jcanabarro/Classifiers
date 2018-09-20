@@ -19,6 +19,9 @@ class BestParameters:
                              'probability': [True]},
                             {'kernel': ['linear'],
                              'C': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+                             'probability': [True]},
+                            {'kernel': ['poly'],
+                             'C': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
                              'probability': [True]}]
         svm_model = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(svm_model)
@@ -55,8 +58,11 @@ class BestParameters:
     def get_mlp_best_param(self, classifier):
         tuned_parameters = {
             'learning_rate': ["constant", "invscaling", "adaptive"],
-            'hidden_layer_sizes': [(10,), (20,), (30,), (40,), (50,),
-                                   (60,), (70,), (80,), (90,), (100,)],
+            'hidden_layer_sizes': [(20,), (20,20,), (20, 20, 20),
+			           (40,), (40,40,), (40, 40, 40),
+				   (60,), (60,60,), (60, 60, 60),
+                                   (80,), (80,80,), (80, 80, 80),
+	                           (100,), (100,100,), (100, 100, 100)],
             'max_iter': [100, 200, 300, 400, 500]
         }
         mlp_model = GridSearchCV(classifier, tuned_parameters)
