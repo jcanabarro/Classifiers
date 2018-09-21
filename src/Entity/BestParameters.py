@@ -16,21 +16,15 @@ class BestParameters:
     def get_svm_best_param(self, classifier):
         tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-1, 1e-2, 1e-3, 1e-4],
                              'C': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-                             'probability': [True]},
-                            {'kernel': ['linear'],
+                             },
+                            {'kernel': ['linear', 'poly'],
                              'C': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-                             'probability': [True]}]
+                             }]
         svm_model = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(svm_model)
 
     def get_knn_best_param(self, classifier):
-        tuned_parameters = [{'algorithm': ['auto'],
-                             'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]},
-                            {'algorithm': ['ball_tree'],
-                             'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]},
-                            {'algorithm': ['kd_tree'],
-                             'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]},
-                            {'algorithm': ['brute'],
+        tuned_parameters = [{'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'],
                              'n_neighbors': [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]}]
         knn_model = GridSearchCV(classifier, tuned_parameters)
         return self.get_best_params(knn_model)
@@ -55,9 +49,11 @@ class BestParameters:
     def get_mlp_best_param(self, classifier):
         tuned_parameters = {
             'learning_rate': ["constant", "invscaling", "adaptive"],
-            'hidden_layer_sizes': [(10,), (20,), (30,), (40,), (50,),
-                                   (60,), (70,), (80,), (90,), (100,)],
-            'activation': ["logistic", "relu"],
+            'hidden_layer_sizes': [(20,), (20, 20,), (20, 20, 20),
+                                   (40,), (40, 40,), (40, 40, 40),
+                                   (60,), (60, 60,), (60, 60, 60),
+                                   (80,), (80, 80,), (80, 80, 80),
+                                   (100,), (100, 100,), (100, 100, 100)],
             'max_iter': [100, 200, 300, 400, 500]
         }
         mlp_model = GridSearchCV(classifier, tuned_parameters)

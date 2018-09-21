@@ -1,11 +1,9 @@
 import numpy as np
-from sklearn.ensemble import VotingClassifier
 
 
 class TestSet:
 
     def __init__(self, test_attributes, test_class):
-        self.predictions_ = list()
         self.test_attributes = test_attributes
         self.test_class = test_class
 
@@ -15,22 +13,27 @@ class TestSet:
             predictions_.append(classifier.predict_proba(self.test_attributes))
         return predictions_
 
-    def voting_classifier(self, classifiers, rule):
-        result = VotingClassifier(estimators=[('knn', classifiers[0]), ('svm', classifiers[1]),
-                                              ('dt', classifiers[2]), ('mlp', classifiers[3]),
-                                              ('nb', classifiers[4])], voting=rule)
-        result.fit(self.test_attributes, np.ravel(self.test_class))
-        return result.predict(self.test_attributes)
-
     def borda_count(self, classifiers):
+        final_prediction = list()
         for classifier in classifiers:
             predictions = []
             for prediction in classifier.predict_proba(self.test_attributes):
                 sorted_by_class = sorted([(prob, index + 1) for index, prob in enumerate(prediction)])
                 sorted_by_index = sorted([(index, weight + 1) for weight, (prob, index) in enumerate(sorted_by_class)])
                 predictions.append([weight for prob, weight in sorted_by_index])
-            self.predictions_.append(predictions)
-        return np.argmax(np.sum(np.array(self.predictions_), axis=0), axis=-1)
+            final_prediction.append(predictions)
+        return np.argmax(np.sum(np.array(final_prediction), axis=0), axis=-1)
+
+    def ranking_rule(self, classifiers):
+        final_prediction = list()
+        for classifier in classifiers:
+            predictions = []
+            for prediction in classifier.predict_proba(self.test_attributes):
+                sorted_by_class = sorted([(prob, index + 1) for index, prob in enumerate(prediction)], reverse=True)
+                sorted_by_index = sorted([(index, weight + 1) for weight, (prob, index) in enumerate(sorted_by_class)])
+                predictions.append([weight for prob, weight in sorted_by_index])
+            final_prediction.append(predictions)
+        return np.argmin(np.sum(np.array(final_prediction), axis=0), axis=-1)
 
     def prod_rule(self, classifiers):
         return np.argmax(np.prod(self.predictions_result(classifiers), axis=0), axis=-1)
@@ -49,3 +52,23 @@ class TestSet:
 
     def sum_rule(self, classifiers):
         return np.argmax(np.sum(self.predictions_result(classifiers), axis=0), axis=-1)
+
+    def majority_rule(self, classifiers):
+        final_prediction = list()
+        for classifier in classifiers:
+            predictions = []
+            for idx, prediction in enumerate(classifier.predict_proba(self.test_attributes)):
+                predictions.append(np.argmax(prediction))
+            final_prediction.append(predictions)
+        final_prediction = np.array(final_prediction).T
+        predictions = []
+        for votes in final_prediction:
+            votes_count = {}
+            for vote in votes:
+                if vote not in votes_count:
+                    votes_count[vote] = 1
+                else:
+                    votes_count[vote] += 1
+            predictions.append(sorted(votes_count.items(), reverse=True)[0][0])
+        return predictions
+
