@@ -18,6 +18,14 @@ def fix_argmax_value(results):
     return results
 
 
+def save_persistence_model(classifier, classifier_name, base_name):
+    joblib.dump(classifier, '../ClassifierPersistenceModel/' + base_name + '/' + classifier_name + '.pkl')
+
+
+def load_persistence_model(classifier, name):
+    joblib.dump(classifier, '../ClassifierPersistenceModel/' + name + '.pkl')
+
+
 class Entity:
 
     def __init__(self, path):
@@ -37,13 +45,7 @@ class Entity:
     def get_value(self, attr):
         return self.data_frame[attr]
 
-    def save_persistence_model(self, classifier, classifier_name, base_name):
-        joblib.dump(classifier, '../ClassifierPersistenceModel/' + base_name + '/' + classifier_name + '.pkl')
-
-    def load_persistence_model(self, classifier, name):
-        joblib.dump(classifier, '../ClassifierPersistenceModel/' + name + '.pkl')
-
-        # Functions to get all the better parameters
+    # Functions to get all the better parameters
     def get_svm_best_param(self, classifier):
         return self.best_param.get_svm_best_param(classifier)
 
@@ -81,48 +83,25 @@ class Entity:
                 acc += 1
         return acc / len(self.test_class)
 
-    # Functions to combine the result of multiples classifiers
-    def get_sum_rule(self, classifiers):
-        sum_result = self.test_set.sum_rule(classifiers)
-        sum_result = fix_argmax_value(sum_result)
-        return sum_result, self.get_proba(sum_result)
-
-    def get_ranking_rule(self, classifiers):
-        ranking_result = self.test_set.ranking_rule(classifiers)
-        ranking_result = fix_argmax_value(ranking_result)
-        return ranking_result, self.get_proba(ranking_result)
-
-    def get_majority_rule(self, classifiers):
-        majority_result = self.test_set.majority_rule(classifiers)
-        majority_result = fix_argmax_value(majority_result)
-        return majority_result, self.get_proba(majority_result)
-
-    def get_borda_rule(self, classifiers):
-        borda_result = self.test_set.borda_count(classifiers)
-        borda_result = fix_argmax_value(borda_result)
-        return borda_result, self.get_proba(borda_result)
-
-    def get_prod_rule(self, classifiers):
-        prod_result = self.test_set.prod_rule(classifiers)
-        prod_result = fix_argmax_value(prod_result)
-        return prod_result, self.get_proba(prod_result)
-
-    def get_max_rule(self, classifiers):
-        max_result = self.test_set.max_rule(classifiers)
-        max_result = fix_argmax_value(max_result)
-        return max_result, self.get_proba(max_result)
-
-    def get_min_rule(self, classifiers):
-        min_result = self.test_set.min_rule(classifiers)
-        min_result = fix_argmax_value(min_result)
-        return min_result, self.get_proba(min_result)
-
-    def get_mean_rule(self, classifiers):
-        mean_result = self.test_set.mean_rule(classifiers)
-        mean_result = fix_argmax_value(mean_result)
-        return mean_result, self.get_proba(mean_result)
-
-    def get_median_rule(self, classifiers):
-        median_result = self.test_set.median_rule(classifiers)
-        median_result = fix_argmax_value(median_result)
-        return median_result, self.get_proba(median_result)
+    # Function to combine the result of multiples classifiers
+    def get_rule(self, classifiers, rule_name):
+        rule_result = []
+        if rule_name == 'sum':
+            rule_result = self.test_set.sum_rule(classifiers)
+        elif rule_name == 'prod':
+            rule_result = self.test_set.prod_rule(classifiers)
+        elif rule_name == 'max':
+            rule_result = self.test_set.max_rule(classifiers)
+        elif rule_name == 'min':
+            rule_result = self.test_set.min_rule(classifiers)
+        elif rule_name == 'median':
+            rule_result = self.test_set.median_rule(classifiers)
+        elif rule_name == 'mean':
+            rule_result = self.test_set.mean_rule(classifiers)
+        elif rule_name == 'ranking':
+            rule_result = self.test_set.ranking_rule(classifiers)
+        elif rule_name == 'borda':
+            rule_result = self.test_set.borda_rule(classifiers)
+        elif rule_name == 'majority':
+            rule_result = self.test_set.borda_rule(classifiers)
+        return self.get_proba(fix_argmax_value(rule_result))

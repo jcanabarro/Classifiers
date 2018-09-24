@@ -13,7 +13,7 @@ class TestSet:
             predictions_.append(classifier.predict_proba(self.test_attributes))
         return predictions_
 
-    def borda_count(self, classifiers):
+    def borda_rule(self, classifiers):
         final_prediction = list()
         for classifier in classifiers:
             predictions = []

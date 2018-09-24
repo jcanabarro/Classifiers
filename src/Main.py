@@ -67,83 +67,36 @@ weaning = Weaning()
 wine = Wine()
 
 bases = [adult, banana, blood, ctg, diabetes, ecoli, faults, german, glass, haberman, heart, ilpd, ionosphere,
-             laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
-             vehicle, vertebral, wbc, wdvg, weaning, wine]
+         laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
+         vehicle, vertebral, wbc, wdvg, weaning, wine]
 
 base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-               'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-               'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
+             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
 
 for idx, base in enumerate(bases):
-    borda_proba_final = []
-    prod_proba_final = []
-    mean_proba_final = []
-    median_proba_final = []
-    max_proba_final = []
-    min_proba_final = []
-    sum_proba_final = []
-    majority_proba_final = []
-    ranking_proba_final = []
 
-    borda_execution_time = []
-    prod_execution_time = []
-    mean_execution_time = []
-    median_execution_time = []
-    max_execution_time = []
-    min_execution_time = []
-    sum_execution_time = []
-    majority_execution_time = []
-    ranking_execution_time = []
+    final_proba = {
+        'borda': [],
+        'prod': [],
+        'mean': [],
+        'max': [],
+        'min': [],
+        'sum': [],
+        'majority': [],
+        'ranking': []
+    }
 
     classifiers = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
         classifiers = base.set_best_params(classifiers)
 
-        start_time = time.time()
-        borda_results, borda_proba = base.get_borda_rule(classifiers)
-        borda_execution_time.append(time.time() - start_time)
-        borda_proba_final.append(borda_proba)
-
-        start_time = time.time()
-        prod_results, prod_proba = base.get_prod_rule(classifiers)
-        prod_execution_time.append(time.time() - start_time)
-        prod_proba_final.append(prod_proba)
-
-        start_time = time.time()
-        mean_results, mean_proba = base.get_mean_rule(classifiers)
-        mean_execution_time.append(time.time() - start_time)
-        mean_proba_final.append(mean_proba)
-
-        start_time = time.time()
-        median_results, median_proba = base.get_median_rule(classifiers)
-        median_execution_time.append(time.time() - start_time)
-        median_proba_final.append(median_proba)
-
-        start_time = time.time()
-        max_results, max_proba = base.get_max_rule(classifiers)
-        max_execution_time.append(time.time() - start_time)
-        max_proba_final.append(max_proba)
-
-        start_time = time.time()
-        min_results, min_proba = base.get_min_rule(classifiers)
-        min_execution_time.append(time.time() - start_time)
-        min_proba_final.append(min_proba)
-
-        start_time = time.time()
-        sum_results, sum_proba = base.get_sum_rule(classifiers)
-        sum_execution_time.append(time.time() - start_time)
-        sum_proba_final.append(sum_proba)
-
-        start_time = time.time()
-        ranking_results, ranking_proba = base.get_ranking_rule(classifiers)
-        ranking_execution_time.append(time.time() - start_time)
-        ranking_proba_final.append(ranking_proba)
-
-        start_time = time.time()
-        majority_results, majority_proba = base.get_majority_rule(classifiers)
-        majority_execution_time.append(time.time() - start_time)
-        majority_proba_final.append(majority_proba)
+        for name in final_proba:
+            start_time = time.time()
+            result = base.get_rule(classifiers, name)
+            final_time = time.time() - start_time
+            final_proba[name].append((result, final_time))
 
         with open('../ClassifierParam/' + base_name[idx] + '.csv', 'a') as f:
             f.write("Execution %d:\n" % i)
@@ -151,31 +104,15 @@ for idx, base in enumerate(bases):
                 f.write("\t%s\n" % item.base_estimator.get_params())
         del classifiers[:]
 
-        with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-            f.write("Borda\tTime\tProd\tTime\tMean\tTime\tMedian\tTime\tMax\tTime\tMin\tTime\tSum\tTime\tMajority\tTime"
-                    "\tRaking\tTime\n")
-            for index, proba in enumerate(borda_proba_final):
-                f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t"
-                        "%.4f\t%.4f\t%.4f\t\n"
-                        % (proba, borda_execution_time[index],
-                            prod_proba_final[index], prod_execution_time[index],
-                            mean_proba_final[index], mean_execution_time[index],
-                            median_proba_final[index], median_execution_time[index],
-                            max_proba_final[index], max_execution_time[index],
-                            min_proba_final[index], min_execution_time[index],
-                            sum_proba_final[index], sum_execution_time[index],
-                            majority_proba_final[index], majority_execution_time[index],
-                            ranking_proba_final[index], ranking_execution_time[index]
-                           ))
+    with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
+        f.write("Borda,Prod,Mean,Median,Max,Min,Sum,Majority,Raking\n")
+        for j in range(0, len(final_proba['borda'])):
+            for name in final_proba:
+                f.write("%.4f," % (final_proba[name][j][0]))
+            f.write("\n")
+
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
         f.write("Base Means\n")
-        f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"
-                % (float(np.sum(borda_proba_final) / len(borda_proba_final)),
-                   float(np.sum(prod_proba_final) / len(prod_proba_final)),
-                   float(np.sum(mean_proba_final) / len(mean_proba_final)),
-                   float(np.sum(median_proba_final) / len(median_proba_final)),
-                   float(np.sum(max_proba_final) / len(max_proba_final)),
-                   float(np.sum(min_proba_final) / len(min_proba_final)),
-                   float(np.sum(sum_proba_final) / len(sum_proba_final)),
-                   float(np.sum(majority_proba_final) / len(majority_proba_final)),
-                   float(np.sum(ranking_proba_final) / len(ranking_proba_final))))
+        for name in final_proba:
+            f.write("%.4f," % (float(np.sum(final_proba[name]) / len(final_proba[name]))))
+        f.write("\n")
