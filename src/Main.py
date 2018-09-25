@@ -66,13 +66,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [adult, banana, blood, ctg, diabetes, ecoli, faults, german, glass, haberman, heart, ilpd, ionosphere,
-         laryngeal1, laryngeal3, lithuanian, liver, magic, mammo, monk, phoneme, segmentation, sonar, thyroid,
-         vehicle, vertebral, wbc, wdvg, weaning, wine]
+bases = [wine]
 
-base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+base_name = ['wine']
 
 for idx, base in enumerate(bases):
 
@@ -91,7 +87,7 @@ for idx, base in enumerate(bases):
     classifiers = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
-        classifiers = base.set_best_params(classifiers)
+        # classifiers = base.set_best_params(classifiers)
 
         for name in final_proba:
             start_time = time.time()
@@ -106,18 +102,18 @@ for idx, base in enumerate(bases):
         del classifiers[:]
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-        f.write("Borda,Prod,Mean,Median,Max,Min,Sum,Majority,Raking\n")
+        f.write("Borda,Max,Mean,Median,Min,Majority,Prod,Raking,Sum\n")
         for j in range(0, len(final_proba['borda'])):
-            for name in final_proba:
-                if name != 'ranking':
+            for name in sorted(final_proba):
+                if name != 'sum':
                     f.write("%.4f," % (final_proba[name][j][0]))
                 else:
                     f.write("%.4f\n" % (final_proba[name][j][0]))
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
-        for name in final_proba:
+        for name in sorted(final_proba):
             proba_mean = float(np.sum(final_proba[name]) / len(final_proba[name]))
-            if name != 'ranking':
+            if name != 'sum':
                 f.write("%.4f," % proba_mean)
             else:
                 f.write("%.4f\n" % proba_mean)
