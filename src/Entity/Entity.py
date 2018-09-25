@@ -2,7 +2,6 @@ import os
 
 import pandas as pd
 import numpy as np
-import pickle as pk
 
 # Other functionality used by sklearn
 from sklearn.externals import joblib

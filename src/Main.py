@@ -80,6 +80,7 @@ for idx, base in enumerate(bases):
         'borda': [],
         'prod': [],
         'mean': [],
+        'median': [],
         'max': [],
         'min': [],
         'sum': [],
@@ -108,11 +109,15 @@ for idx, base in enumerate(bases):
         f.write("Borda,Prod,Mean,Median,Max,Min,Sum,Majority,Raking\n")
         for j in range(0, len(final_proba['borda'])):
             for name in final_proba:
-                f.write("%.4f," % (final_proba[name][j][0]))
-            f.write("\n")
+                if name != 'ranking':
+                    f.write("%.4f," % (final_proba[name][j][0]))
+                else:
+                    f.write("%.4f\n" % (final_proba[name][j][0]))
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
-        f.write("Base Means\n")
         for name in final_proba:
-            f.write("%.4f," % (float(np.sum(final_proba[name]) / len(final_proba[name]))))
-        f.write("\n")
+            proba_mean = float(np.sum(final_proba[name]) / len(final_proba[name]))
+            if name != 'ranking':
+                f.write("%.4f," % proba_mean)
+            else:
+                f.write("%.4f\n" % proba_mean)
