@@ -66,9 +66,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [wine]
+bases = [adult, banana, wine]
 
-base_name = ['wine']
+base_name = ['adult', 'banana', 'wine']
 
 for idx, base in enumerate(bases):
 
@@ -87,7 +87,7 @@ for idx, base in enumerate(bases):
     classifiers = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
-        # classifiers = base.set_best_params(classifiers)
+        classifiers = base.set_best_params(classifiers)
 
         for name in final_proba:
             start_time = time.time()
@@ -102,7 +102,7 @@ for idx, base in enumerate(bases):
         del classifiers[:]
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-        f.write("Borda,Max,Mean,Median,Min,Majority,Prod,Raking,Sum\n")
+        f.write("Borda,Majority,Max,Mean,Median,Min,Prod,Raking,Sum\n")
         for j in range(0, len(final_proba['borda'])):
             for name in sorted(final_proba):
                 if name != 'sum':
