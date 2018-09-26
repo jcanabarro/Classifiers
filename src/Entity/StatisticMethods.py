@@ -8,9 +8,7 @@ def calculate_mannwhitne(max_value, min_value):
 
 methods_names = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Prod', 'Raking', 'Sum']
 
-base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+base_name = ['adult', 'wine']
 
 for name in base_name:
     print("Reading " + name + " base")
@@ -30,7 +28,7 @@ for name in base_name:
         if mann_pvalue < 0.05:
             print("\tIt is significant between the instances", end="")
             with open('../../ClassifierMannWhitne/statistics.csv', 'a') as f:
-                f.write("%s,%f,%s,%s,%f" % (name, kruskal_pvalue, evaluate_value[0][1], evaluate_value[-1][1], mann_pvalue))
+                f.write("%s,%s,%s,%s,%f" % (name, 'yes', evaluate_value[0][1], evaluate_value[-1][1], mann_pvalue))
                 f.write("\n")
         else:
             print("\tNon-significant between the instances", end="")

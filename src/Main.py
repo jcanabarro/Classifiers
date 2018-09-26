@@ -66,9 +66,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [adult, banana, wine]
+bases = [mammo, monk, blood]
 
-base_name = ['adult', 'banana', 'wine']
+base_name = ['mammo', 'monk', 'blood']
 
 for idx, base in enumerate(bases):
 
@@ -87,7 +87,8 @@ for idx, base in enumerate(bases):
     classifiers = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
-        classifiers = base.set_best_params(classifiers)
+        if base_name[idx] != 'blood':
+            classifiers = base.set_best_params(classifiers)
 
         for name in final_proba:
             start_time = time.time()
