@@ -1,4 +1,3 @@
-import numpy as np
 import time
 import sys
 
@@ -35,6 +34,14 @@ from src.Entity.BasesObject.WDVG import Wdvg
 from src.Entity.BasesObject.Weaning import Weaning
 from src.Entity.BasesObject.Wine import Wine
 
+
+def classifier_proba_mean(predictions):
+    prediction_mean = 0
+    for prediction in predictions:
+        prediction_mean += prediction[0]
+    return float(prediction_mean / len(predictions))
+
+
 adult = Adult()
 banana = Banana()
 blood = Blood()
@@ -66,9 +73,9 @@ wdvg = Wdvg()
 weaning = Weaning()
 wine = Wine()
 
-bases = [mammo, monk, blood]
+bases = [adult, banana, wine]
 
-base_name = ['mammo', 'monk', 'blood']
+base_name = ['adult', 'banana', 'wine']
 
 for idx, base in enumerate(bases):
 
@@ -87,8 +94,8 @@ for idx, base in enumerate(bases):
     classifiers = []
     for i in range(0, 20):
         classifiers = base.get_trained_classifiers(3)
-        if base_name[idx] != 'blood':
-            classifiers = base.set_best_params(classifiers)
+        # if base_name[idx] != 'blood':
+        #     classifiers = base.set_best_params(classifiers)
 
         for name in final_proba:
             start_time = time.time()
@@ -113,7 +120,7 @@ for idx, base in enumerate(bases):
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'a') as f:
         for name in sorted(final_proba):
-            proba_mean = float(np.sum(final_proba[name]) / len(final_proba[name]))
+            proba_mean = classifier_proba_mean(final_proba[name])
             if name != 'sum':
                 f.write("%.4f," % proba_mean)
             else:
