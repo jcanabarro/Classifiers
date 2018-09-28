@@ -16,6 +16,6 @@ for name in base_name:
     with open('../ClassifierResult/FinalTable.csv', 'a') as f:
         f.write("%s," % name.capitalize())
         for idx in range(0, len(combiner_mean) - 1):
-            f.write("{:.4f} \pm{:.4s},".format(combiner_mean[idx], repr(standard_deviation[idx])))
-        f.write("{:.4f} \pm{:.4s}\n".format(combiner_mean[len(combiner_mean) - 1],
-                                            repr(standard_deviation[len(combiner_mean) - 1])))
+            f.write("{:.4f} $\pm${:.4s},".format(combiner_mean[idx], repr(standard_deviation[idx])))
+        f.write("{:.4f} $\pm${:.4s}\n".format(combiner_mean[len(combiner_mean) - 1],
+                                              repr(standard_deviation[len(combiner_mean) - 1])))
