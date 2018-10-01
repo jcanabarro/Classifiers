@@ -2,17 +2,14 @@ import pandas as pd
 from scipy.stats import kruskal
 
 
-methods_names = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Prod', 'Raking', 'Sum']
-
-base_name = ['adult', 'wine']
+base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
+             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
+             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
 
 for name in base_name:
     print("Reading " + name + " base")
     data_frame = pd.read_csv("../../ClassifierResult/" + name + ".csv")
-    combiner_mean = data_frame.iloc[20]
     data_frame = data_frame.drop(data_frame.index[20])
-
-    evaluate_value = sorted((value, name) for value, name in zip(combiner_mean, methods_names))
 
     methods_scores_fm = tuple(data_frame[name] for name in data_frame)
     kruskal_h, kruskal_pvalue = kruskal(*methods_scores_fm)
