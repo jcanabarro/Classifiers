@@ -24,3 +24,11 @@ for name in base_name:
             else:
                 f.write("{:.4f} $\pm${:.4s}\n".format(combiner_mean[method], repr(standard_deviation[method])))
 
+    with open('../UnformatFinalTable.csv', 'a') as f:
+        f.write("%s," % name.capitalize())
+        for method in methods_names:
+            if method != 'Sum':
+                f.write("{:.4f},".format(combiner_mean[method]))
+            else:
+                f.write("{:.4f}\n".format(combiner_mean[method]))
+

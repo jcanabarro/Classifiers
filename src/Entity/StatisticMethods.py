@@ -7,7 +7,7 @@ base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', '
              'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
 
 for name in base_name:
-    print("Reading " + name + " base")
+    print("Reading " + name + " base", end="")
     data_frame = pd.read_csv("../../ClassifierResult/" + name + ".csv")
     data_frame = data_frame.drop(data_frame.index[20])
 
@@ -15,6 +15,6 @@ for name in base_name:
     kruskal_h, kruskal_pvalue = kruskal(*methods_scores_fm)
 
     if kruskal_pvalue < 0.05:
-        print("\tIt is significant to Kruskal Wallis: %f" % kruskal_pvalue)
+        print(" It is significant to Kruskal Wallis: %f" % kruskal_pvalue)
     else:
-        print("\tNon-significant result to Kruskal Wallis: %f" % kruskal_pvalue)
+        print(" Non-significant result to Kruskal Wallis: %f" % kruskal_pvalue)
