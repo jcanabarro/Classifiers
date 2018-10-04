@@ -1,10 +1,9 @@
 import pandas as pd
 
-methods_names = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Prod', 'Ranking', 'Sum']
+from src.Entity.Constants import Constants
 
-base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+methods_names = Constants.COMBINER_METHODS_NAME
+base_name = Constants.STRING_BASE_NAME
 
 with open('../FinalTable.csv', 'a') as f:
     f.write("Bases,Borda,Max,Mean,Median,Min,Majority,Prod,Ranking,Sum\n")

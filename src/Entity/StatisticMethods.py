@@ -1,10 +1,8 @@
 import pandas as pd
 from scipy.stats import kruskal
+from src.Entity.Constants import Constants
 
-
-base_name = ['adult', 'banana', 'blood', 'ctg', 'diabetes', 'ecoli', 'faults', 'german', 'glass', 'haberman', 'heart',
-             'ilpd', 'ionosphere', 'laryngeal1', 'laryngeal3', 'lithuanian', 'liver', 'magic', 'mammo', 'monk',
-             'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc', 'wdvg', 'weaning', 'wine']
+base_name = Constants.STRING_BASE_NAME
 
 for name in base_name:
     print("Reading " + name + " base", end="")
