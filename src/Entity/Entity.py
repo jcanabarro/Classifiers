@@ -40,25 +40,36 @@ class Entity:
                                   self.samples)
         self.best_param = BestParameters(self.validate_attributes, self.validate_class)
         self.test_set = TestSet(self.test_attributes, self.test_class)
+        self.score = []
 
     def get_value(self, attr):
         return self.data_frame[attr]
 
     # Functions to get all the better parameters
     def get_svm_best_param(self, classifier):
-        return self.best_param.get_svm_best_param(classifier)
+        classifier_result, score = self.best_param.get_svm_best_param(classifier)
+        self.score.append(score)
+        return classifier_result
 
     def get_knn_best_param(self, classifier):
-        return self.best_param.get_knn_best_param(classifier)
+        classifier_result, score = self.best_param.get_knn_best_param(classifier)
+        self.score.append(score)
+        return classifier_result
 
     def get_nb_best_param(self, classifier):
-        return self.best_param.get_nb_best_param(classifier)
+        classifier_result, score = self.best_param.get_nb_best_param(classifier)
+        self.score.append(score)
+        return classifier_result
 
     def get_dt_best_param(self, classifier):
-        return self.best_param.get_dt_best_param(classifier)
+        classifier_result, score = self.best_param.get_dt_best_param(classifier)
+        self.score.append(score)
+        return classifier_result
 
     def get_mlp_best_param(self, classifier):
-        return self.best_param.get_mlp_best_param(classifier)
+        classifier_result, score = self.best_param.get_mlp_best_param(classifier)
+        self.score.append(score)
+        return classifier_result
 
     # Function to get the best params of a list of classifiers
     def set_best_params(self, classifiers):
@@ -83,7 +94,7 @@ class Entity:
         return acc / len(self.test_class)
 
     # Function to combine the result of multiples classifiers
-    def get_rule(self, classifiers, rule_name):
+    def get_rule(self, classifiers, rule_name, base_name):
         rule_result = []
         if rule_name == 'sum':
             rule_result = self.test_set.sum_rule(classifiers)
@@ -103,4 +114,8 @@ class Entity:
             rule_result = self.test_set.borda_rule(classifiers)
         elif rule_name == 'majority':
             rule_result = self.test_set.majority_rule(classifiers)
+        elif rule_name == 'single' and base_name != 'blood':
+            rule_result = self.test_set.single_best_rule(classifiers, np.argmax(self.score))
+        elif rule_name == 'oracle':
+            return self.get_proba(self.test_set.oracle_rule(classifiers))
         return self.get_proba(fix_argmax_value(rule_result))

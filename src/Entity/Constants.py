@@ -29,6 +29,7 @@ from src.Entity.BasesObject.WDVG import Wdvg
 from src.Entity.BasesObject.Weaning import Weaning
 from src.Entity.BasesObject.Wine import Wine
 
+
 class Constants:
     OBJECT_LIST = [Adult(), Banana(), Blood(), Ctg(), Diabetes(), Ecoli(), Faults(), German(), Glass(), Haberman(),
                    Heart(), Ilpd(), Ionosphere(), Laryngeal1(), Laryngeal3(), Lithuanian(), Liver(), Magic(),

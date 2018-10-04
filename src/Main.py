@@ -26,7 +26,9 @@ for idx, base in enumerate(bases):
         'min': [],
         'sum': [],
         'majority': [],
-        'ranking': []
+        'ranking': [],
+        'oracle': [],
+        'single': []
     }
 
     classifiers = []
@@ -40,7 +42,7 @@ for idx, base in enumerate(bases):
 
         for name in final_proba:
             start_time = time.time()
-            result = base.get_rule(classifiers, name)
+            result = base.get_rule(classifiers, name, base_name[idx])
             final_time = time.time() - start_time
             final_proba[name].append((result, final_time))
 
@@ -51,7 +53,7 @@ for idx, base in enumerate(bases):
         del classifiers[:]
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-        f.write("Borda,Majority,Max,Mean,Median,Min,Prod,Ranking,Sum\n")
+        f.write("Borda,Majority,Max,Mean,Median,Min,Oracle,Prod,Ranking,Single,Sum\n")
         for j in range(0, len(final_proba['borda'])):
             for name in sorted(final_proba):
                 if name != 'sum':

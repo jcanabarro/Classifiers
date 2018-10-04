@@ -72,3 +72,25 @@ class TestSet:
             predictions.append(sorted(votes_count.items(), reverse=True)[0][0])
         return predictions
 
+    def oracle_rule(self, classifiers):
+        final_prediction = list()
+        for classifier in classifiers:
+            predictions = []
+            for idx, prediction in enumerate(classifier.predict_proba(self.test_attributes)):
+                predictions.append(np.argmax(prediction) + 1)
+            final_prediction.append(predictions)
+        final_prediction = np.array(final_prediction).T
+        predictions = []
+        class_result = self.test_class.values
+        for idx, votes in enumerate(final_prediction):
+            actual_size = len(predictions)
+            for vote in votes:
+                if vote == class_result[idx]:
+                    predictions.append(vote)
+                    break
+            if actual_size == len(predictions):
+                predictions.append(0)
+        return predictions
+
+    def single_best_rule(self, classifiers, index):
+        return classifiers[index].predict_proba(self.test_attributes)
