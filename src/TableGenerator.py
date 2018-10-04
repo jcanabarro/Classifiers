@@ -6,7 +6,7 @@ methods_names = Constants.COMBINER_METHODS_NAME
 base_name = Constants.STRING_BASE_NAME
 
 with open('../FinalTable.csv', 'a') as f:
-    f.write("Bases,Borda,Max,Mean,Median,Min,Majority,Prod,Ranking,Sum\n")
+    f.write("Bases,Borda,Majority,Max,Mean,Median,Min,Prod,Ranking,Sum\n")
 
 for name in base_name:
     print("Reading " + name + " base")

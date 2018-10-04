@@ -102,5 +102,5 @@ class Entity:
         elif rule_name == 'borda':
             rule_result = self.test_set.borda_rule(classifiers)
         elif rule_name == 'majority':
-            rule_result = self.test_set.borda_rule(classifiers)
+            rule_result = self.test_set.majority_rule(classifiers)
         return self.get_proba(fix_argmax_value(rule_result))
