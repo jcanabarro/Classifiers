@@ -41,5 +41,10 @@ class Constants:
                         'mammo', 'monk', 'phoneme', 'segmentation', 'sonar', 'thyroid', 'vehicle', 'vertebral', 'wbc',
                         'wdvg', 'weaning', 'wine']
 
-    COMBINER_METHODS_NAME = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Prod', 'Ranking', 'Sum']
+    COMBINER_METHODS_NAME = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Oracle', 'Prod', 'Ranking', 'Single', 'Sum']
 
+    TABLE_COMBINER_METHODS_NAME = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Prod', 'Ranking', 'Sum']
+
+    CSV_HEADER = "Borda,Majority,Max,Mean,Median,Min,Oracle,Prod,Ranking,Single,Sum\n"
+
+    TABLE_HEADER = "Borda,Majority,Max,Mean,Median,Min,Prod,Ranking,Sum\n"

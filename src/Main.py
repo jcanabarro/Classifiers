@@ -53,7 +53,7 @@ for idx, base in enumerate(bases):
         del classifiers[:]
 
     with open('../ClassifierResult/' + base_name[idx] + '.csv', 'w') as f:
-        f.write("Borda,Majority,Max,Mean,Median,Min,Oracle,Prod,Ranking,Single,Sum\n")
+        f.write(Constants.CSV_HEADER)
         for j in range(0, len(final_proba['borda'])):
             for name in sorted(final_proba):
                 if name != 'sum':
