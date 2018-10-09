@@ -42,7 +42,7 @@ for name in base_name:
     goals_data_frame = pd.read_csv("../ClassifierResult/" + name + ".csv")
 
     # Main Table
-    data_frame, combiner_mean = format_data_frame(main_data_frame, Constants.GOALS_TABLE_COMBINER_METHODS_NAME)
+    data_frame, combiner_mean = format_data_frame(main_data_frame, Constants.GOALS_COMBINER_METHODS_NAME)
     standard_deviation = data_frame.std(axis=0)
     write_on_csv('../Tables/FinalTable.csv', '../Tables/UnformattedFinalTable.csv', name, combiner_mean,
                  standard_deviation, Constants.TABLE_COMBINER_METHODS_NAME)
@@ -51,4 +51,4 @@ for name in base_name:
     data_frame, combiner_mean = format_data_frame(goals_data_frame, Constants.TABLE_COMBINER_METHODS_NAME)
     standard_deviation = data_frame.std(axis=0)
     write_on_csv('../Tables/GoalsTable.csv', '../Tables/UnformattedGoalsTable.csv', name, combiner_mean,
-                 standard_deviation, Constants.GOALS_TABLE_COMBINER_METHODS_NAME)
+                 standard_deviation, Constants.GOALS_COMBINER_METHODS_NAME)
