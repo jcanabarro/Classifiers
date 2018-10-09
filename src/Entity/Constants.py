@@ -45,6 +45,10 @@ class Constants:
 
     TABLE_COMBINER_METHODS_NAME = ['Borda', 'Majority', 'Max', 'Mean', 'Median', 'Min', 'Prod', 'Ranking', 'Sum']
 
+    GOALS_TABLE_COMBINER_METHODS_NAME = ['Oracle', 'Single']
+
     CSV_HEADER = "Borda,Majority,Max,Mean,Median,Min,Oracle,Prod,Ranking,Single,Sum\n"
 
     TABLE_HEADER = "Borda,Majority,Max,Mean,Median,Min,Prod,Ranking,Sum\n"
+
+    GOALS_TABLE_HEADER = "Oracle,Single\n"
