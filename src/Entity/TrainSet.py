@@ -10,7 +10,7 @@ from sklearn.ensemble import BaggingClassifier
 
 
 def get_svm():
-    return SVC(kernel='linear', probability=False, class_weight='balanced')
+    return SVC(kernel='linear', probability=True, class_weight='balanced')
 
 
 def get_knn(neighbors):

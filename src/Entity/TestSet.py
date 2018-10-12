@@ -93,4 +93,8 @@ class TestSet:
         return predictions
 
     def single_best_rule(self, classifiers, index):
-        return classifiers[index].predict_proba(self.test_attributes)
+        proba_result = classifiers[index].predict_proba(self.test_attributes)
+        results = []
+        for idx, result in enumerate(proba_result):
+            results.append(np.argmax(result))
+        return results

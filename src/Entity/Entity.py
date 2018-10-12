@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from src.Entity.BestParameters import BestParameters
 from src.Entity.TestSet import TestSet
 from src.Entity.TrainSet import TrainSet
+from sklearn.metrics import accuracy_score
 
 
 def fix_argmax_value(results):
@@ -86,12 +87,7 @@ class Entity:
 
     # Function to get proba result
     def get_proba(self, predictions):
-        acc = 0
-        for index, result in enumerate(predictions):
-            expected = self.test_class.iloc[index][0]
-            if expected == result:
-                acc += 1
-        return acc / len(self.test_class)
+        return accuracy_score(self.test_class, predictions)
 
     # Function to combine the result of multiples classifiers
     def get_rule(self, classifiers, rule_name, base_name):
