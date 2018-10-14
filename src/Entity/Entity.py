@@ -9,7 +9,6 @@ from sklearn.model_selection import train_test_split
 from src.Entity.BestParameters import BestParameters
 from src.Entity.TestSet import TestSet
 from src.Entity.TrainSet import TrainSet
-from sklearn.metrics import accuracy_score
 
 
 def fix_argmax_value(results):
@@ -86,8 +85,16 @@ class Entity:
         return self.train_set.get_trained_classifiers(neighbors)
 
     # Function to get proba result
-    def get_proba(self, predictions):
-        return accuracy_score(self.test_class, predictions)
+    def get_proba(self, predictions, rule_name):
+        acc = 0
+        print(rule_name)
+        for index, result in enumerate(predictions):
+            expected = self.test_class.iloc[index][0]
+            if np.any(expected == result):
+                acc += 1
+        print(acc / len(self.test_class))
+        # print(accuracy_score(self.test_class, predictions))
+        return acc / len(self.test_class)
 
     # Function to combine the result of multiples classifiers
     def get_rule(self, classifiers, rule_name, base_name):
@@ -112,6 +119,7 @@ class Entity:
             rule_result = self.test_set.majority_rule(classifiers)
         elif rule_name == 'single' and base_name != 'blood':
             rule_result = self.test_set.single_best_rule(classifiers, np.argmax(self.score))
+            del self.score[:]
         elif rule_name == 'oracle':
-            return self.get_proba(self.test_set.oracle_rule(classifiers))
-        return self.get_proba(fix_argmax_value(rule_result))
+            return self.get_proba(self.test_set.oracle_rule(classifiers), rule_name)
+        return self.get_proba(fix_argmax_value(rule_result), rule_name)
