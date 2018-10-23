@@ -85,15 +85,12 @@ class Entity:
         return self.train_set.get_trained_classifiers(neighbors)
 
     # Function to get proba result
-    def get_proba(self, predictions, rule_name):
+    def get_proba(self, predictions):
         acc = 0
-        print(rule_name)
         for index, result in enumerate(predictions):
             expected = self.test_class.iloc[index][0]
             if np.any(expected == result):
                 acc += 1
-        print(acc / len(self.test_class))
-        # print(accuracy_score(self.test_class, predictions))
         return acc / len(self.test_class)
 
     # Function to combine the result of multiples classifiers
@@ -121,5 +118,5 @@ class Entity:
             rule_result = self.test_set.single_best_rule(classifiers, np.argmax(self.score))
             del self.score[:]
         elif rule_name == 'oracle':
-            return self.get_proba(self.test_set.oracle_rule(classifiers), rule_name)
-        return self.get_proba(fix_argmax_value(rule_result), rule_name)
+            return self.get_proba(self.test_set.oracle_rule(classifiers))
+        return self.get_proba(fix_argmax_value(rule_result))
